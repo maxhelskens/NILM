@@ -39,6 +39,10 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
+            color_gas = d3.scale.linear().domain([1,result.length+1])
+                .interpolate(d3.interpolateHcl)
+                .range([d3.rgb("#E0F3F7"), d3.rgb('#007038')]);
+
             // show the corresponding navigation buttons
             $("#nav_gas").removeClass("hide");
 
@@ -64,6 +68,10 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
+            color_water = d3.scale.linear().domain([1,result.length+1])
+                .interpolate(d3.interpolateHcl)
+                .range([d3.rgb("#DAE8F5"), d3.rgb('#00579A')]);
+
             // show the corresponding navigation buttons
             $("#nav_water").removeClass("hide");
 
@@ -89,6 +97,10 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
+            color_electricity = d3.scale.linear().domain([1,result.length+1])
+                .interpolate(d3.interpolateHcl)
+                .range([d3.rgb("#FFF8CE"), d3.rgb('#ED6B2D')]);
+
             // show the corresponding navigation buttons
             $("#nav_electricity").removeClass("hide");
 

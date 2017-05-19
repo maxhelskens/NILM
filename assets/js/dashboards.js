@@ -234,12 +234,27 @@ function get_datasets(appliances, type) {
 $.getJSON("assets/php/get_appliances.php",
     {
         //TODO: Change back
-        //cons_type: $('#type').val(),
-        cons_type: 'gas',
+        cons_type: $('#type').val(),
         user: sessionStorage.getItem('user')
     },
     function (result) {
         let type = $('#type').val();
+
+        if(type == 'gas') {
+            color_gas = d3.scale.linear().domain([1,result.length+1])
+                .interpolate(d3.interpolateHcl)
+                .range([d3.rgb("#E0F3F7"), d3.rgb('#007038')]);
+        }
+        else if (type == 'water') {
+            color_water = d3.scale.linear().domain([1,result.length+1])
+                .interpolate(d3.interpolateHcl)
+                .range([d3.rgb("#DAE8F5"), d3.rgb('#00579A')]);
+        }
+        else {
+            color_electricity = d3.scale.linear().domain([1,result.length+1])
+                .interpolate(d3.interpolateHcl)
+                .range([d3.rgb("#FFF8CE"), d3.rgb('#ED6B2D')]);
+        }
 
         appliances = result;
 
@@ -306,9 +321,29 @@ function show_appliance(id, color) {
         document.getElementById('pricepo').innerText = '€'+appliances[id].Avg_price_per_occ;
         document.getElementById('pricetot').innerText = '€'+appliances[id].Total_price;
 
-
         /** SET COMPARE CHART **/
-        plot_compare(compare_data[id]);
+        console.log(compare_data[id]);
+        if(compare_data[id] != null) {
+            let canvas = document.getElementById("compare");
+            let panel = canvas.parentNode;
+
+            panel.innerHTML = "<canvas id='compare' height='50%' width='400'></canvas>";
+
+
+            plot_compare(compare_data[id]);
+        }
+        else {
+            // Get the correct panel
+            let canvas = document.getElementById("compare");
+            let panel = canvas.parentNode;
+
+            // Add a 'NO DATA' tag to the panel
+            panel.innerHTML =
+                "<div id='compare' style='width: 100%; height: 60px ; display: -webkit-flex;" +
+                " display: flex; align-items: center; justify-content: center;'>" +
+                "<h4>Assign a tag to the appliance in order to compare to other users.</h4>" +
+                "</div>";
+        }
 
         /** CLEAR CHART **/
         const ctx = document.getElementById("line");
@@ -456,14 +491,17 @@ function edit_appliance() {
 function get_compare (result) {
 
     for (let i = 0; i < result.length; i++) {
-        $.getJSON('assets/php/get_same_devices.php',
-            {
-                tag_id: appliances[i].Tags_Tags_ID
-            },
-            function (res) {
-                compare_data[i] = res;
-            }
-        );
+        if (appliances[i].Tags_Tags_ID != 1) {
+            $.getJSON('assets/php/get_same_devices.php',
+                {
+                    tag_id: appliances[i].Tags_Tags_ID
+                },
+                function (res) {
+                    compare_data[i] = res;
+                }
+            );
+        }
+
     }
 }
 
@@ -535,8 +573,8 @@ function plot_compare (to_compare) {
                 }, {
                     label: 'My Appliances',
                     data: mydata,
-                    backgroundColor: get_color($('#type').val(), 2),
-                    hoverBackgroundColor: get_color($('#type').val(), 2)
+                    backgroundColor: get_color($('#type').val(), Math.ceil(appliances.length/2)),
+                    hoverBackgroundColor: get_color($('#type').val(), Math.ceil(appliances.length/2))
                 }]
         };
 

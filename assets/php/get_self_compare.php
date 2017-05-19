@@ -12,8 +12,20 @@ include('db_config.php');
  *       Get Variables       *
  *****************************/
 
+/*if (isset($_GET['user'])) {
+    $usr = $_GET['user'];
+}
+else {
+    exit();
+}*/
 
+$usr = 1;
+$bars = 12;
+$delta = 'month';
 
+date_default_timezone_set('Europe/Brussels');
+$to_date = date('Y-m-d', strtotime('last Monday'));
+$from_date = date('Y-m-d',strtotime($to_date . ' - '.$bars.' ' . $delta));
 
 /*****************************
  *       Connect to db       *
@@ -38,3 +50,34 @@ if ($mysqli->connect_errno) {
     exit;
 }
 
+if ($delta == 'week') {
+    $sql = "SELECT WEEK(Occurances.Start) number, Occurances.Price, Appliances.Type, Appliances.Users_ID
+            FROM Occurances
+            LEFT JOIN Appliances ON Occurances.Appliances_App_ID = Appliances.App_ID
+            WHERE Users_ID = '$usr' and Start > '$from_date'
+            GROUP BY number, Type";
+}
+else {
+    $sql = "SELECT MONTH(Occurances.Start) number, Occurances.Price, Appliances.Type, Appliances.Users_ID
+            FROM Occurances
+            LEFT JOIN Appliances ON Occurances.Appliances_App_ID = Appliances.App_ID
+            WHERE Users_ID = '$usr' and Start > '$from_date'
+            GROUP BY number, Type";
+}
+
+$result = $mysqli->query($sql);
+
+if(!$result) {
+    echo "Error: Failed to execute query: \n";
+    echo "Query: " . $sql . "\n";
+    echo "Errno: " . $mysqli->errno . "\n";
+    echo "Error: " . $mysqli->error . "\n";
+    exit;
+}
+
+$appliances =  array();
+while ($appliance = $result->fetch_assoc()) {
+    $appliances[] = $appliance;
+}
+
+echo json_encode($appliances);
