@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>NILM - Dash</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+      <link href="assets/css/bootstrap.css" rel="stylesheet">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.3/css/bootstrap-datetimepicker.min.css">
+      <!--external css-->
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+      <!-- Custom styles for this template -->
+      <link href="assets/css/style.css" rel="stylesheet">
+      <link href="assets/css/style-responsive.css" rel="stylesheet">
+
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
+      <script>
+          if (sessionStorage.getItem('status') == null || sessionStorage.getItem('status') == ''){
+              window.location = 'login.html';
+          }
+      </script>
+  </head>
+
+  <body>
+
+  <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+      <header class="header black-bg">
+              <div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div>
+            <!--logo start-->
+            <a href="index.html" class="logo"><b>NILM Dash</b></a>
+            <!--logo end-->
+            <div class="nav notify-row" id="top_menu">
+                <!--  notification start -->
+                <ul class="nav top-menu">
+                    <!-- inbox dropdown start-->
+                    <li id="header_inbox_bar" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                            <i class="fa fa-envelope-o"></i>
+                            <span class="badge bg-theme">1</span>
+                        </a>
+                        <ul class="dropdown-menu extended inbox">
+                            <div class="notify-arrow notify-arrow-green"></div>
+                            <li>
+                                <p class="green">You have 1 new message</p>
+                            </li>
+                            <li>
+                                <a href="index.html#">
+                                    <span class="photo"><img alt="avatar" src="assets/img/CORE.png"></span>
+                                    <span class="subject">
+                                    <span class="from">CORE</span>
+                                    <span class="time">Just now</span>
+                                    </span>
+                                    <span class="message">
+                                        Congrats, you are our first user!
+                                    </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="index.html#">See all messages</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- inbox dropdown end -->
+                    <li id="header_add_appliance" class="dropdown">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                            <i class="fa fa-thumb-tack"></i>
+                            <span class="badge bg-theme"></span>
+                        </a>
+                        <ul class="dropdown-menu extended">
+                            <div class="notify-arrow notify-arrow-green"></div>
+                            <li>
+                                <p class="green">Pin an appliance</p>
+                            </li>
+                            <li>
+                                <div style="padding: 10px 10px 10px 10px">
+                                    <form>
+                                        <input placeholder="Name" type="text" class="form-control">
+                                        <label style="margin-top: 10px">Start and end time</label>
+
+                                        <div class="form-group">
+                                            <div class='input-group date' id='datetimepicker0'>
+                                                <input type='text' class="form-control" />
+                                                <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class='input-group date' id='datetimepicker1'>
+                                                <input type='text' class="form-control" />
+                                                <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            </div>
+                                        </div>
+
+                                        <label>Resources</label><br>
+                                        <div style="text-align: center; margin-bottom: 15px">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="inlineCheckbox1" value="gas">
+                                                <i class="fa fa-fire"></i>
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="inlineCheckbox2" value="water">
+                                                <i class="fa fa-tint"></i>
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" id="inlineCheckbox3" value="electricity">
+                                                <i class="fa fa-bolt"></i>
+                                            </label>
+                                        </div>
+                                        <div style="text-align: right">
+                                            <input placeholder="Submit" type="submit" class="btn btn-theme">
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!--  notification end -->
+            </div>
+            <div class="top-menu">
+            	<ul class="nav pull-right top-menu">
+                    <li><a class="logout" href="login.html">Logout</a></li>
+            	</ul>
+            </div>
+        </header>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+              
+              	  <p class="centered"><a href="profile.html"><img src="assets/img/max.png" class="img-circle" width="80"></a></p>
+              	  <h5 class="centered">Max Helskens</h5>
+
+                  <div id="notify-row-side" class="row centered visible-xs" style="margin-left: 10px; margin-right: 10px">
+                      <div class="col-xs-6 centered">
+                          <li class="sub-menu" style="padding: 5px 0 5px 0;">
+                              <a onclick="show_messages();" class="dcjq-parent">
+                                  <i class="fa fa-envelope-o"></i>
+                                  <span>1</span>
+                              </a>
+                          </li>
+                      </div>
+                      <div class="col-xs-6 centered">
+                          <li class="sub-menu" style="padding: 5px 0 5px 0;">
+                              <a onclick="show_pin();" class="dcjq-parent">
+                                  <i class="fa fa-thumb-tack"></i>
+                                  <span class="badge bg-theme"></span>
+                              </a>
+                          </li>
+                      </div>
+                  </div>
+                  <div class="row" style="margin-bottom: 10px; margin-left: 10px; margin-right: 10px">
+                      <div id="messages" class="col-xs-12" style="display: none">
+                          <div style="display: block !important; padding-left: 10px; padding-right: 10px">
+                              <div style="background: #85C0D9; color: white; padding: 12px 10px 1px 10px; margin-top: 5px;">
+                                  <p class="green">You have 1 new message</p>
+                              </div>
+                              <div style="background: white; padding: 12px 0 15px 10px;">
+                                  <a href="#" style="width: 100%; display: inline-block; line-height: normal; color: #797979">
+                                  <span class="photo" style="display: block"><img alt="avatar" src="assets/img/CORE.png" style="border-radius: 2px 2px 2px 2px; float: left;
+                                        height: 40px;margin-right: 4px;width: 40px;"></span>
+                                      <span class="subject" style="display: block">
+                                    <span class="from" style="font-size: 12px; font-weight: 600">CORE</span>
+                                    <span class="time" style="font-size: 11px; font-style: italic; font-weight: bold; position: absolute; right: 60px;">Just now</span>
+                                    </span>
+                                      <span class="message" style="padding-top: 5px; font-size: 11px">
+                                        Congrats, you are our first user!
+                                    </span>
+                                  </a>
+                                  <div style="position: absolute;top:0;left:0;width: 100%;height:100%;background-color: transparent;z-index:2;"></div>
+                              </div>
+                          </div>
+                      </div>
+                      <div id="pin" class="col-xs-12" style="display: none">
+                          <div style="display: block !important; padding-left: 10px; padding-right: 10px">
+                              <div style="background: #85C0D9; color: white; padding: 12px 0 1px 10px; margin-top: 5px;">
+                                  <p class="green">Pin an appliance</p>
+                              </div>
+                              <div style="background: white; padding: 12px 0 15px 10px;">
+                                  <div style="padding: 10px 10px 10px 10px">
+                                      <form>
+                                          <input placeholder="Name" type="text" class="form-control">
+                                          <label style="margin-top: 10px">Start and end time</label>
+
+                                          <div class="form-group">
+                                              <div class='input-group date' id='datetimepicker2'>
+                                                  <input type='text' class="form-control" />
+                                                  <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                              </div>
+                                          </div>
+                                          <div class="form-group">
+                                              <div class='input-group date' id='datetimepicker3'>
+                                                  <input type='text' class="form-control" />
+                                                  <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                              </div>
+                                          </div>
+
+                                          <label>Resources</label><br>
+                                          <div style="text-align: center; margin-bottom: 15px">
+                                              <label class="checkbox-inline">
+                                                  <input type="checkbox" id="inlineCheckbox4" value="option1">
+                                                  <i class="fa fa-fire"></i>
+                                              </label>
+                                              <label class="checkbox-inline">
+                                                  <input type="checkbox" id="inlineCheckbox5" value="option1">
+                                                  <i class="fa fa-tint"></i>
+                                              </label>
+                                              <label class="checkbox-inline">
+                                                  <input type="checkbox" id="inlineCheckbox6" value="option1">
+                                                  <i class="fa fa-bolt"></i>
+                                              </label>
+                                          </div>
+                                          <div style="text-align: right">
+                                              <input placeholder="Submit" type="submit" class="btn btn-theme">
+                                          </div>
+
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <li class="mt">
+                      <a class="active" href="index.html">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Total overview</span>
+                      </a>
+                  </li>
+
+                  <li id="nav_gas" class="sub-menu hide">
+                      <a href="dash_gas.html">
+                          <i class="fa fa-fire"></i>
+                          <span>Gas</span>
+                      </a>
+                  </li>
+
+                  <li id="nav_water" class="sub-menu hide">
+                      <a  href="dash_water.html">
+                          <i class="fa fa-tint"></i>
+                          <span>Water</span>
+                      </a>
+                  </li>
+
+                  <li id="nav_electricity" class="sub-menu hide">
+                      <a  href="dash_electricity.html">
+                          <i class="fa fa-bolt"></i>
+                          <span>Electricity</span>
+                      </a>
+                  </li>
+
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+              <h3><i class="fa fa-angle-right"></i> General overview</h3>
+              <!-- page start-->
+              <div class="tab-pane" id="chartjs">
+                  <div class="row mt">
+                      <div class="col-md-4" style="margin-bottom: 30px">
+                          <div class="content-panel">
+                              <h4 id="title_gas"><i class="fa fa-angle-right"></i> Gas</h4>
+                              <div class="panel-body text-center">
+                                  <canvas id="doughnut_gas" height="300" width="400"></canvas>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4" style="margin-bottom: 30px">
+                          <div class="content-panel">
+                              <h4 id="title_water"><i class="fa fa-angle-right"></i> Water</h4>
+                              <div class="panel-body text-center">
+                                  <canvas id="doughnut_water" height="300" width="400"></canvas>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-4" style="margin-bottom: 30px">
+                          <div class="content-panel">
+                              <h4 id="title_electricity"><i class="fa fa-angle-right"></i> Electricity</h4>
+                              <div class="panel-body text-center">
+                                  <canvas id="doughnut_electricity" height="300" width="400"></canvas>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- page end-->
+          </section>
+      </section>
+
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer visible-xs" style="background: #7C8292">
+        <div class="text-center">
+            2017 - Max Helskens & Jean-Baptiste Verroken
+            <a href="index.html#" class="go-top">
+                <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+    </footer>
+      <!--footer end-->
+  </section>
+
+    <!-- js placed at the end of the document so the pages load faster -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
+
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.3/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+  <!--common script for all pages-->
+    <script src="assets/js/common-scripts.js"></script>
+
+    <script src="http://d3js.org/d3.v3.js"></script>
+
+    <!--script for this page-->
+  <script src="assets/js/responsive_bootstrap_toolkit.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+  <script src="assets/js/index.js"></script>
+  
+
+  </body>
+</html>

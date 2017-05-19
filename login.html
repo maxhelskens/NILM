@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dashboard">
+    <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+
+    <title>NILM - Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-tagsinput.css">
+    <!--external css-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/style-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+        sessionStorage.setItem('status','');
+    </script>
+
+</head>
+
+<body>
+<!-- **********************************************************************************************************************************************************
+MAIN CONTENT
+*********************************************************************************************************************************************************** -->
+
+<div id="login-page">
+    <div class="container">
+
+        <div id="form-login" class="form-login">
+            <h2 id="modal_header" class="form-login-heading">sign in now</h2>
+            <div id="login" class="login-wrap">
+
+                <form id="form_l" role="form" data-toggle="validator">
+                    <div class="form-group has-feedback">
+                        <input id="login_email" name="login_email" type="email" class="form-control" placeholder="Email" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input id="login_password" name="login_password" type="password" class="form-control" placeholder="Password" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+
+                    <label class="checkbox">
+                            <span class="pull-right">
+                                <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a>
+
+                            </span>
+                    </label>
+                    <button onClick="form_submit();" class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN IN
+                    </button>
+                    <hr>
+
+                    <div class="registration">
+                        Don't have an account yet?<br/>
+                        <a onclick="show_create()">
+                            Create an account
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <div id="create" class="login-wrap" style="display: none">
+                <form id="form_c" role="form" data-toggle="validator">
+                    <div style="position: relative; height: 200px; overflow-x: hidden; overflow-y: scroll;">
+                        <div id="step1" style="height: 100%;">
+                            <div class="form-group has-feedback">
+                                <input id="new_email" name="new_email" type="email" class="form-control" placeholder="Email"  required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <input name="password[0]" type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group">
+                                    <input name="password[1]" type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm password" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+
+                            <a class="btn btn-theme btn-block" onclick="to_step2()"><i class="fa fa-arrow-right"></i> Next</a>
+                        </div>
+                        <div id="step2" style="display: none; position: absolute; top: 0; height: 100%; width: 100%">
+                            <div class="form-group">
+                                <input id="f_name" name="f_name" type="text" class="form-control" placeholder="First name"  required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group">
+                                <input id="l_name" name="l_name" type="text" class="form-control" placeholder="Last Name" required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <a class="btn btn-default btn-block" onclick="back_to_step1()"><i class="fa fa-arrow-left"></i> Back</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a class="btn btn-theme btn-block" onclick="to_step3()"><i class="fa fa-arrow-right"></i> Next</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="step3" style="display: none; position: absolute; top: 0; width: 100%">
+                            <p>At this moment the NILM Dash application only supports the use of <a href="https://www.flukso.net">FLUKSO meters</a>.</p>
+                            <p>Type all your Flukso ID's seperated by a comma</p>
+                            <div class="form-group">
+                                <input id="fluksos" name="fluksos" type="text" placeholder="Flukso ID's" class="form-control" data-role="tagsinput" required>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <a class="btn btn-default btn-block" onclick="back_to_step2()"><i class="fa fa-arrow-left"></i> Back</a>
+                                </div>
+                                <div class="col-xs-6">
+                                    <button onClick="form_submit();" class="btn btn-theme btn-block" type="submit"><i class="fa fa-check"></i> Finish</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="registration">
+                        Already have an account?<br/>
+                        <a onclick="show_login()">
+                            Log in
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <div id="wrong_pwd" class="alert alert-danger hide" role="alert">
+                <strong>Oops!</strong> It seems you have entered the wrong password.
+            </div>
+
+
+            <!-- Modal -->
+            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal"
+                 class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Forgot Password ?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Enter your e-mail address below to reset your password.</p>
+                            <input type="text" name="email" placeholder="Email" autocomplete="off"
+                                   class="form-control placeholder-no-fix">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+                            <button class="btn btn-theme" type="button">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- modal -->
+
+        </div>
+
+    </div>
+</div>
+
+<!-- js placed at the end of the document so the pages load faster -->
+
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/jquery-ui.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="assets/js/bootstrap-tagsinput.min.js"></script>
+<script src="assets/js/validator.js"></script>
+
+
+
+<!--BACKSTRETCH-->
+<!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+<script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
+<script>
+    $.backstretch("assets/img/login-bg2.jpg", {speed: 500});
+
+
+
+    function show_create() {
+        $('#login').slideToggle('slow');
+        setTimeout(function (){
+            $('#modal_header').text('Create an account');
+
+            $('#create').slideToggle('slow');
+
+        }, 1000);
+        $('#form-login').trigger("reset");
+        $('#form_l').trigger("reset");
+        $('#form_c').trigger("reset");
+    }
+
+    function show_login() {
+        $('#create').slideToggle('slow');
+        setTimeout(function (){
+            $('#modal_header').text('Sign in now');
+
+            $('#login').slideToggle('slow');
+
+        }, 1000);
+        $('#form-login').trigger("reset");
+        $('#form_l').trigger("reset");
+        $('#form_c').trigger("reset");
+    }
+
+    function back_to_step1() {
+        $('#step2').hide('slide', {direction: 'right'}, 1000);
+        setTimeout(function (){
+            $('#step1').show('slide', {direction: 'left'}, 1000);
+        }, 100);
+    }
+
+    function to_step2() {
+        $('#step1').hide('slide', {direction: 'left'}, 1000);
+        setTimeout(function (){
+            $('#step2').show('slide', {direction: 'right'}, 1000);
+        }, 100);
+    }
+
+    function back_to_step2() {
+        $('#step3').hide('slide', {direction: 'right'}, 1000);
+        setTimeout(function (){
+            $('#step2').show('slide', {direction: 'left'}, 1000);
+        }, 100);
+    }
+
+    function to_step3() {
+        $('#step2').hide('slide', {direction: 'left'}, 1000);
+        setTimeout(function (){
+            $('#step3').show('slide', {direction: 'right'}, 1000);
+        }, 100);
+    }
+
+
+    $("#form_l").submit(function(e) {
+        e.preventDefault();
+    });
+    $("#form_c").submit(function(e) {
+        e.preventDefault();
+    });
+
+    function form_submit() {
+
+        $.getJSON("assets/php/login.php",
+            {
+                login_email: $('#login_email').val(),
+                login_password: $('#login_password').val(),
+                new_email: $('#new_email').val(),
+                password: [$('#inputPassword').val(), $('#inputPasswordConfirm').val()],
+                f_name: $('#f_name').val(),
+                l_name: $('#l_name').val(),
+                fluksos: $('#fluksos').val()
+            },
+            function (result) {
+
+                console.log(result);
+                if (result.id != -1) {
+                    sessionStorage.setItem('status','loggedIn');
+                    sessionStorage.setItem('user', result.id);
+                    sessionStorage.setItem('first name', result.F_Name);
+                    sessionStorage.setItem('last name', result.L_Name);
+                    window.location.replace('index.html');
+                }
+                else {
+                    console.log('here');
+                    document.getElementById("wrong_pwd").classList.remove("hide");
+                }
+            });
+    }
+
+</script>
+
+
+</body>
+</html>
