@@ -12,16 +12,27 @@ include('db_config.php');
  *       Get Variables       *
  *****************************/
 
-/*if (isset($_GET['user'])) {
+if (isset($_GET['user'])) {
     $usr = $_GET['user'];
 }
 else {
     exit();
-}*/
+}
 
-$usr = 1;
-$bars = 12;
-$delta = 'month';
+if (isset($_GET['amount'])) {
+    $bars = $_GET['amount'];
+}
+else {
+    exit();
+}
+
+if (isset($_GET['sample'])) {
+    $delta = $_GET['sample'];
+}
+else {
+    exit();
+}
+
 
 date_default_timezone_set('Europe/Brussels');
 $to_date = date('Y-m-d', strtotime('last Monday'));
@@ -51,18 +62,20 @@ if ($mysqli->connect_errno) {
 }
 
 if ($delta == 'week') {
-    $sql = "SELECT WEEK(Occurances.Start) number, Occurances.Price, Appliances.Type, Appliances.Users_ID
+    $sql = "SELECT WEEK(Occurances.Start) week, YEAR(Occurances.Start) year, Occurances.Price, Appliances.Type, Appliances.Users_ID
             FROM Occurances
             LEFT JOIN Appliances ON Occurances.Appliances_App_ID = Appliances.App_ID
-            WHERE Users_ID = '$usr' and Start > '$from_date'
-            GROUP BY number, Type";
+            WHERE Users_ID = '$usr' " . //and Start > '$from_date'
+            "GROUP BY week, Type
+            ORDER BY week DESC";
 }
 else {
-    $sql = "SELECT MONTH(Occurances.Start) number, Occurances.Price, Appliances.Type, Appliances.Users_ID
+    $sql = "SELECT MONTH(Occurances.Start) month, Occurances.Price, Appliances.Type, Appliances.Users_ID
             FROM Occurances
             LEFT JOIN Appliances ON Occurances.Appliances_App_ID = Appliances.App_ID
-            WHERE Users_ID = '$usr' and Start > '$from_date'
-            GROUP BY number, Type";
+            WHERE Users_ID = '$usr' " . //and Start > '$from_date'
+            "GROUP BY month, Type
+            ORDER BY month DESC";
 }
 
 $result = $mysqli->query($sql);
@@ -75,9 +88,98 @@ if(!$result) {
     exit;
 }
 
-$appliances =  array();
-while ($appliance = $result->fetch_assoc()) {
-    $appliances[] = $appliance;
+function getStartAndEndDate($week, $year)
+{
+
+    $time = strtotime("1 January $year", time());
+    $day = date('w', $time);
+    $time += ((7*$week)+1-$day)*24*3600;
+    $return[0] = date('d M', $time);
+    $time += 6*24*3600;
+    $return[1] = date('d M', $time);
+    return $return;
 }
 
-echo json_encode($appliances);
+
+if ($delta == 'week') {
+    $prev = -1;
+    $label ='';
+    $temp = '{';
+    $cons = '{';
+
+    while ($appliance = $result->fetch_assoc()) {
+
+        if ($appliance['week'] != $prev) {
+            if ( $cons != '{') {
+                if ($temp != '{') {
+                    $temp = $temp . ',';
+                }
+                $cons = $cons . '}';
+                $temp = $temp . '"' . $label . '":' . $cons;
+
+                $label ='';
+                $cons = '{';
+            }
+
+            $dates = getStartAndEndDate($appliance['week'], $appliance['year']);
+
+            $label = $dates[0] . ' - ' . $dates[1];
+            $cons = $cons . '"' . $appliance['Type'] .'":'. $appliance['Price'];
+
+            $prev = $appliance['week'];
+        }
+        else {
+            $cons =  $cons. ',' . '"' . $appliance['Type'] .'":'. $appliance['Price'];
+        }
+
+    }
+    $cons = $cons . '}';
+
+    if ($temp != '{') {
+        $temp = $temp . ',';
+    }
+    $temp = $temp . '"' . $label . '":' . $cons . '}';
+
+    echo json_encode($temp);
+}
+else {
+    $prev = -1;
+    $monthName ='';
+    $temp = '{';
+    $cons = '{';
+
+    while ($appliance = $result->fetch_assoc()) {
+
+        if ($appliance['month'] != $prev) {
+            if ( $cons != '{') {
+                if ($temp != '{') {
+                    $temp = $temp . ',';
+                }
+                $cons = $cons . '}';
+                $temp = $temp . '"' . $monthName . '":' . $cons;
+
+                $monthName ='';
+                $cons = '{';
+            }
+
+            $monthNum  = $appliance['month'];
+            $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+            $monthName = $dateObj->format('F'); // March
+
+            $cons = $cons . '"' . $appliance['Type'] .'":'. $appliance['Price'];
+
+            $prev = $appliance['month'];
+        }
+        else {
+            $cons =  $cons. ',' . '"' . $appliance['Type'] .'":'. $appliance['Price'];
+        }
+
+    }
+    $cons = $cons . '}';
+    if ($temp != '{') {
+        $temp = $temp . ',';
+    }
+    $temp = $temp . '"' . $monthName . '":' . $cons . '}';
+
+    echo json_encode($temp);
+}

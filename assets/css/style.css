@@ -2350,3 +2350,18 @@ input[type="checkbox"]:focus {
 .dropdown-menu {
     overflow: visible !important;
 }
+
+
+.btn-primary {
+    border-color: #adadad !important;
+}
+
+
+#radioBtn .notActive{
+    color: #85C0D9;
+    background-color: #fff;
+}
+
+#radioBtn .active {
+    background-color: #85C0D9 !important;
+}

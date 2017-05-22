@@ -82,15 +82,15 @@ function get_unit (type) {
 function plot_stacked_bar(result, type) {
 
     /** PUT THE DATA IN THE CORRECT STRUCTURE **/
-    let data = {};
+    var data = {};
     data.labels = [""];
     const datasets = [];
 
-    let total_cons = 0;
-    for (let i=0; i < result.length; i++) {
+    var total_cons = 0;
+    for (var i=0; i < result.length; i++) {
         total_cons += parseInt(result[i].Percentage);
 
-        let set = {
+        var set = {
             label: result[i].Name,
             data: [parseInt(result[i].Percentage)],
             backgroundColor: get_color(type, i)
@@ -162,7 +162,7 @@ function plot_stacked_bar(result, type) {
         },
 
         animation: {
-            onComplete: function () {
+            onCompvare: function () {
                 const chartInstance = this.chart;
                 const ctx = chartInstance.ctx;
                 ctx.textAlign = "left";
@@ -188,7 +188,7 @@ function plot_stacked_bar(result, type) {
 
     /** PLOT THE ACTUAL CHART **/
     const ctx = document.getElementById("stacked_bar");
-    let myChart = new Chart(ctx, {
+    var myChart = new Chart(ctx, {
         type: 'horizontalBar',
         data: data,
         options: barOptions_stacked
@@ -198,7 +198,7 @@ function plot_stacked_bar(result, type) {
 
 function get_datasets(appliances, type) {
 
-    for (let i = 0; i < appliances.length; i++) {
+    for (var i = 0; i < appliances.length; i++) {
 
         $.ajax({
             type: 'GET',
@@ -238,7 +238,7 @@ $.getJSON("assets/php/get_appliances.php",
         user: sessionStorage.getItem('user')
     },
     function (result) {
-        let type = $('#type').val();
+        var type = $('#type').val();
 
         if(type == 'gas') {
             color_gas = d3.scale.linear().domain([1,result.length+1])
@@ -274,14 +274,14 @@ $.getJSON("assets/php/get_tags.php",
 
         const select = document.getElementById("tags_select");
 
-        let option = document.createElement("option");
+        var option = document.createElement("option");
         option.text = '- Select a tag -';
         option.value = '';
 
         select.appendChild(option);
 
-        for (let i = 0; i < result.length; i++) {
-            let option = document.createElement("option");
+        for (var i = 0; i < result.length; i++) {
+            var option = document.createElement("option");
             option.text = result[i].Name;
             option.value = result[i].Name;
 
@@ -290,7 +290,7 @@ $.getJSON("assets/php/get_tags.php",
     });
 
 
-let prevID = -1;
+var prevID = -1;
 
 
 /***********************************
@@ -324,8 +324,8 @@ function show_appliance(id, color) {
         /** SET COMPARE CHART **/
         console.log(compare_data[id]);
         if(compare_data[id] != null) {
-            let canvas = document.getElementById("compare");
-            let panel = canvas.parentNode;
+            var canvas = document.getElementById("compare");
+            var panel = canvas.parentNode;
 
             panel.innerHTML = "<canvas id='compare' height='50%' width='400'></canvas>";
 
@@ -334,8 +334,8 @@ function show_appliance(id, color) {
         }
         else {
             // Get the correct panel
-            let canvas = document.getElementById("compare");
-            let panel = canvas.parentNode;
+            var canvas = document.getElementById("compare");
+            var panel = canvas.parentNode;
 
             // Add a 'NO DATA' tag to the panel
             panel.innerHTML =
@@ -359,7 +359,7 @@ function show_appliance(id, color) {
 
         const parentnode = ctx.parentNode;
         const iframes = parentnode.querySelectorAll('iframe');
-        for (let i = 0; i < iframes.length; i++) {
+        for (var i = 0; i < iframes.length; i++) {
             iframes[i].parentNode.removeChild(iframes[i]);
         }
 
@@ -370,7 +370,7 @@ function show_appliance(id, color) {
 
         labels = [];
         values = [];
-        for (let i = 0; i < thisData.length; i++) {
+        for (var i = 0; i < thisData.length; i++) {
             labels.push(thisData[i].index);
             values.push(thisData[i].Value);
         }
@@ -447,7 +447,7 @@ function show_appliance(id, color) {
             maintainAspectRatio: false
         };
 
-        let myChart = new Chart(ctx, {
+        var myChart = new Chart(ctx, {
             type: 'line',
             data: data,
             options: options
@@ -490,7 +490,7 @@ function edit_appliance() {
 
 function get_compare (result) {
 
-    for (let i = 0; i < result.length; i++) {
+    for (var i = 0; i < result.length; i++) {
         if (appliances[i].Tags_Tags_ID != 1) {
             $.getJSON('assets/php/get_same_devices.php',
                 {
@@ -513,7 +513,7 @@ function plot_compare (to_compare) {
 
     const parentnode = ctx.parentNode;
     const iframes = parentnode.querySelectorAll('iframe');
-    for (let i = 0; i < iframes.length; i++) {
+    for (var i = 0; i < iframes.length; i++) {
         iframes[i].parentNode.removeChild(iframes[i]);
     }
 
@@ -528,9 +528,9 @@ function plot_compare (to_compare) {
     /** MODIFY DATA **/
     const data = [];
     const mydata = [];
-    let max = to_compare[0].Avg_tot_consumption;
-    let min = to_compare[0].Avg_tot_consumption;
-    let this_appl = 0;
+    var max = to_compare[0].Avg_tot_consumption;
+    var min = to_compare[0].Avg_tot_consumption;
+    var this_appl = 0;
 
     for ( i = 0; i < to_compare.length; i++) {
 
@@ -580,7 +580,7 @@ function plot_compare (to_compare) {
 
 
     /** PLOT CHART **/
-    let scatterChart = new Chart(ctx, {
+    var scatterChart = new Chart(ctx, {
         type: 'bubble',
         data: bubbleChartData,
         options: {
