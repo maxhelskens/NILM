@@ -25,9 +25,13 @@ color_electricity = d3.scale.linear().domain([1,7])
 
 
 
+week_prices = {};
+month_prices = [];
+
+
 /********************************
  *                              *
- *           Get App            *
+ *           Get Data           *
  *                              *
  ********************************/
 
@@ -119,6 +123,31 @@ $.getJSON("assets/php/get_appliances.php",
 
     });
 
+$.getJSON("assets/php/get_self_compare.php",
+    {
+        sample: 'week', // 'week' or 'month
+        amount: 12, // number of samples to the past
+        user: sessionStorage.getItem('user')
+    },
+    function (result) {
+        result =JSON.parse(result);
+
+        handle_price_data(result, 'week');
+    }
+);
+
+$.getJSON("assets/php/get_self_compare.php",
+    {
+        sample: 'month', // 'week' or 'month
+        amount: 12, // number of samples to the past
+        user: sessionStorage.getItem('user')
+    },
+    function (result) {
+        result =JSON.parse(result);
+
+        handle_price_data(result, 'month');
+    }
+);
 
 
 /***************************************
@@ -184,6 +213,149 @@ function plot_doughnut(appliances, tag) {
     });
 }
 
+function handle_price_data(result, sample) {
+    /** Modify data **/
+    var keys = Object.keys(result);
+
+    var gas_data = [];
+    var water_data = [];
+    var electricity_data = [];
+    var labels = [];
+
+    for (var i = 0; i < 12 - keys.length; i++) {
+        labels.push('');
+        gas_data.push(0);
+        water_data.push(0);
+        electricity_data.push(0);
+    }
+
+    for(var i = 0; i < keys.length; i++) {
+        labels.push(keys[i]);
+        var prices = result[keys[i]];
+        var prices_keys = Object.keys(result[keys[i]]);
+
+        var gas_index = prices_keys.indexOf("gas");
+        var water_index = prices_keys.indexOf("water");
+        var electricity_index = prices_keys.indexOf("electricity");
+
+        if (gas_index != -1) {
+            gas_data.push(prices[prices_keys[gas_index]]);
+        }
+        else {
+            gas_data.push(0);
+        }
+
+        if (water_index != -1) {
+            water_data.push(prices[prices_keys[water_index]]);
+        }
+        else {
+            water_data.push(0);
+        }
+
+        if (electricity_index != -1) {
+            electricity_data.push(prices[prices_keys[electricity_index]]);
+        }
+        else {
+            electricity_data.push(0);
+        }
+    }
+
+    if (sample == 'week') {
+        week_prices['labels'] = labels;
+        week_prices['gas'] = gas_data;
+        week_prices['water'] = water_data;
+        week_prices['electricity'] = electricity_data;
+
+        plot_price_chart(week_prices, sample);
+    }
+    else {
+        month_prices['labels'] = labels;
+        month_prices['gas'] = gas_data;
+        month_prices['water'] = water_data;
+        month_prices['electricity'] = electricity_data;
+    }
+}
+
+function plot_price_chart(data, sample) {
+
+    var ctx = document.getElementById("price_chart");
+
+    ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
+
+    if (window.innerWidth >= 992) {
+        ctx.height = 300;
+        var labels = data.labels;
+    }
+    else {
+        ctx.height = 300;
+
+        var labels =['','','','','','','','','','','',''];
+    }
+
+    const parentnode = ctx.parentNode;
+    parentnode.innerHTML = '<canvas id="price_chart" height="300" width="400"></canvas>';
+    var ctx = document.getElementById("price_chart");
+
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'gas',
+                data: data.gas,
+                backgroundColor: '#7FCDBD'
+            },
+                {
+                    label: 'water',
+                    data: data.water,
+                    backgroundColor: '#85C0D9'
+                },{
+                    label: 'electricity',
+                    data: data.electricity,
+                    backgroundColor: '#FFDC92'
+                }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                    stacked: true,
+                    ticks: {
+                        beginAtZero:true
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Price ( € )'
+                    }
+                }],
+                xAxes: [{
+                    stacked: true,
+                    ticks: {
+                        beginAtZero:true
+                    },
+                    gridLines: {
+                        display:false
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Time ( '+ sample +' )'
+                    }
+                }]
+
+            }
+        }
+    });
+}
+
+/*****************************************
+ *                                       *
+ *             Set Username              *
+ *                                       *
+ *****************************************/
+
+$('#username').html(sessionStorage.getItem('first name') + ' ' + sessionStorage.getItem('last name'));
 
 /*****************************************
  *                                       *
@@ -235,8 +407,39 @@ function show_no_data(tag) {
         "</div>";
 }
 
+/*****************************************
+ *                                       *
+ *            Other functions            *
+ *                                       *
+ *****************************************/
 
+$('#radioBtn a').on('click', function(){
+    var sel = $(this).data('title');
+    var tog = $(this).data('toggle');
+    $('#'+tog).prop('value', sel);
 
+    if ($('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').hasClass('active')) {
+        $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    }
+    else {
+        $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+    }
+
+    if ($('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').hasClass('active')) {
+        $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    }
+    else {
+        $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+    }
+
+    var sample = $('a[data-toggle="'+tog+'"]').filter('.active').attr('data-title');
+    if (sample == 'week') {
+        plot_price_chart(week_prices, 'week');
+    }
+    else {
+        plot_price_chart(month_prices, 'month');
+    }
+});
 
 $(function () {
     $('#datetimepicker0').datetimepicker({
@@ -252,7 +455,6 @@ $(function () {
         format:'DD-MM-YYYY HH:mm'
     });
 });
-
 
 function show_messages() {
     if ($('#pin').is(":visible")) {

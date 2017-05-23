@@ -267,12 +267,12 @@ MAIN CONTENT
             },
             function (result) {
 
-                console.log(result);
-                if (result.id != -1) {
+                console.log(result[0]);
+                if (result[0].id != -1) {
                     sessionStorage.setItem('status','loggedIn');
-                    sessionStorage.setItem('user', result.id);
-                    sessionStorage.setItem('first name', result.F_Name);
-                    sessionStorage.setItem('last name', result.L_Name);
+                    sessionStorage.setItem('user', result[0].ID);
+                    sessionStorage.setItem('first name', result[0].F_Name);
+                    sessionStorage.setItem('last name', result[0].L_Name);
                     window.location.replace('index.html');
                 }
                 else {

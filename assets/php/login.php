@@ -144,7 +144,7 @@ else if(!$create &&$login) {
      *         LOGIN         *
      *************************/
 
-    $sql = "SELECT Password, ID FROM Users WHERE Email = '$email';";
+    $sql = "SELECT * FROM Users WHERE Email = '$email';";
     $result = $mysqli->query($sql);
 
     if(!$result) {
@@ -164,12 +164,11 @@ else if(!$create &&$login) {
     $id = $data[0]["ID"];
 
     if ($pwd1 == $pwd) {
-        $output['id'] =  $id;
+        echo json_encode($data);
     }
     else {
         $output['id'] = -1;
+        echo json_encode($output);
     }
 
 }
-
-echo json_encode($output);

@@ -62,7 +62,7 @@ if ($mysqli->connect_errno) {
 }
 
 if ($delta == 'week') {
-    $sql = "SELECT WEEK(Occurances.Start) week, YEAR(Occurances.Start) year, Occurances.Price, Appliances.Type, Appliances.Users_ID
+    $sql = "SELECT WEEK(Occurances.Start) week, YEAR(Occurances.Start) year, SUM(Occurances.Price) as Price, Appliances.Type, Appliances.Users_ID
             FROM Occurances
             LEFT JOIN Appliances ON Occurances.Appliances_App_ID = Appliances.App_ID
             WHERE Users_ID = '$usr' " . //and Start > '$from_date'
@@ -70,7 +70,7 @@ if ($delta == 'week') {
             ORDER BY week DESC";
 }
 else {
-    $sql = "SELECT MONTH(Occurances.Start) month, Occurances.Price, Appliances.Type, Appliances.Users_ID
+    $sql = "SELECT MONTH(Occurances.Start) month, SUM(Occurances.Price) as Price, Appliances.Type, Appliances.Users_ID
             FROM Occurances
             LEFT JOIN Appliances ON Occurances.Appliances_App_ID = Appliances.App_ID
             WHERE Users_ID = '$usr' " . //and Start > '$from_date'

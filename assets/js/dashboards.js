@@ -53,9 +53,6 @@ function get_color (type, index) {
     }
 }
 
-/** Consumption type **/
-console.log($('#type').val());
-
 /** Appliance data**/
 datapoints = {};
 compare_data = {};
@@ -195,7 +192,6 @@ function plot_stacked_bar(result, type) {
     });
 }
 
-
 function get_datasets(appliances, type) {
 
     for (var i = 0; i < appliances.length; i++) {
@@ -229,7 +225,6 @@ function get_datasets(appliances, type) {
     }
 
 }
-
 
 $.getJSON("assets/php/get_appliances.php",
     {
@@ -288,7 +283,6 @@ $.getJSON("assets/php/get_tags.php",
             select.appendChild(option);
         }
     });
-
 
 var prevID = -1;
 
@@ -656,16 +650,19 @@ function plot_compare (to_compare) {
     }
 }
 
+/*****************************************
+ *                                       *
+ *             Set Username              *
+ *                                       *
+ *****************************************/
 
+$('#username').html(sessionStorage.getItem('first name') + ' ' + sessionStorage.getItem('last name'));
 
 /***********************************
  *                                 *
  *         Other functions         *
  *                                 *
  ***********************************/
-
-
-
 
 $(function () {
     $('#datetimepicker0').datetimepicker({
@@ -681,7 +678,6 @@ $(function () {
         format:'DD-MM-YYYY HH:mm'
     });
 });
-
 
 function show_messages() {
     if ($('#pin').is(":visible")) {
