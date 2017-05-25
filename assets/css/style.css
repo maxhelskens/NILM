@@ -2365,3 +2365,9 @@ input[type="checkbox"]:focus {
 #radioBtn .active {
     background-color: #85C0D9 !important;
 }
+
+@media (min-width: 992px) {
+    .modal-dialog {
+        width: 25% !important;
+    }
+}

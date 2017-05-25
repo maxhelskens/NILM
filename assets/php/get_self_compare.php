@@ -67,7 +67,7 @@ if ($delta == 'week') {
             LEFT JOIN Appliances ON Occurances.Appliances_App_ID = Appliances.App_ID
             WHERE Users_ID = '$usr' " . //and Start > '$from_date'
             "GROUP BY week, Type
-            ORDER BY week DESC";
+            ORDER BY week ASC";
 }
 else {
     $sql = "SELECT MONTH(Occurances.Start) month, SUM(Occurances.Price) as Price, Appliances.Type, Appliances.Users_ID
@@ -75,7 +75,7 @@ else {
             LEFT JOIN Appliances ON Occurances.Appliances_App_ID = Appliances.App_ID
             WHERE Users_ID = '$usr' " . //and Start > '$from_date'
             "GROUP BY month, Type
-            ORDER BY month DESC";
+            ORDER BY month ASC";
 }
 
 $result = $mysqli->query($sql);

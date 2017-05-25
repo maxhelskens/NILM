@@ -138,7 +138,7 @@ if (!$login && $create) {
 
     $output['id'] =  $newCUserId;
 }
-else if(!$create &&$login) {
+else if(!$create && $login) {
 
     /*************************
      *         LOGIN         *

@@ -9,17 +9,17 @@
  ********************************/
 
 /** GAS COLORS **/
-color_gas = d3.scale.linear().domain([1,5])
+color_gas = d3.scale.linear().domain([0,5])
     .interpolate(d3.interpolateHcl)
     .range([d3.rgb("#E0F3F7"), d3.rgb('#007038')]);
 
 /** WATER COLORS **/
-color_water = d3.scale.linear().domain([1,6])
+color_water = d3.scale.linear().domain([0,6])
     .interpolate(d3.interpolateHcl)
     .range([d3.rgb("#DAE8F5"), d3.rgb('#00579A')]);
 
 /** ELECTRICITY COLORS **/
-color_electricity = d3.scale.linear().domain([1,7])
+color_electricity = d3.scale.linear().domain([0,7])
     .interpolate(d3.interpolateHcl)
     .range([d3.rgb("#FFF8CE"), d3.rgb('#ED6B2D')]);
 
@@ -43,7 +43,7 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
-            color_gas = d3.scale.linear().domain([1,result.length+1])
+            color_gas = d3.scale.linear().domain([0,result.length+1])
                 .interpolate(d3.interpolateHcl)
                 .range([d3.rgb("#E0F3F7"), d3.rgb('#007038')]);
 
@@ -72,7 +72,7 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
-            color_water = d3.scale.linear().domain([1,result.length+1])
+            color_water = d3.scale.linear().domain([0,result.length+1])
                 .interpolate(d3.interpolateHcl)
                 .range([d3.rgb("#DAE8F5"), d3.rgb('#00579A')]);
 
@@ -101,7 +101,7 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
-            color_electricity = d3.scale.linear().domain([1,result.length+1])
+            color_electricity = d3.scale.linear().domain([0,result.length+1])
                 .interpolate(d3.interpolateHcl)
                 .range([d3.rgb("#FFF8CE"), d3.rgb('#ED6B2D')]);
 
@@ -174,13 +174,13 @@ function plot_doughnut(appliances, tag) {
     var colors = [];
     var total_p = 0;
     for ( var i = 0; i < appliances.length; i++) {
-        colors.push(color_scale(i+1));
+        colors.push(color_scale(i));
         data.push(parseInt(appliances[i].Percentage));
         total_p += parseInt(appliances[i].Percentage);
         labels.push(appliances[i].Name);
     }
 
-    colors.push(color_scale(i+1));
+    colors.push(color_scale(i));
     data.push(parseInt(100 - total_p));
     labels.push("Rest");
 
@@ -215,6 +215,7 @@ function plot_doughnut(appliances, tag) {
 
 function handle_price_data(result, sample) {
     /** Modify data **/
+    console.log(result);
     var keys = Object.keys(result);
 
     var gas_data = [];
@@ -480,4 +481,60 @@ function show_pin() {
     else {
         $('#pin').slideToggle('slow');
     }
+}
+
+function to_input(label, icon, type) {
+
+    var width = 60;
+    if (width < label.innerWidth()) {
+        width = label.innerWidth();
+    }
+
+    var input = $('<input id="' + label.attr('id') + '" style="display: inline; height: 100%; width: ' + width + 'px;"/>').val( label.text().trim() );
+    label.replaceWith( input );
+
+    var save = function(){
+        var i = '';
+        if (icon != '') {
+            i ='<i class="fa fa-' + icon + '"></i>';
+        }
+
+        var p = $('<' + type + ' id="' + input.attr('id') + '"> ' + i +' ' + input.val().trim() + '</' + type + '>');
+        input.replaceWith( p );
+
+        $('#modal_footer').removeClass('hide');
+    };
+
+    input.one('blur', save).focus();
+}
+function to_tags_input() {
+
+    window.addEventListener('click', function(e){
+        if (document.getElementById('clickbox').contains(e.target)){
+            // Clicked in box
+        } else{
+            $('#tag-group_in').empty();
+            tags = $('#tags-input_in').tagsinput('items');
+            var html = '';
+            for (var i = 0; i < tags.length; i++) {
+                html += '<span class="label label-default">' + tags[i] + '</span>' + '\n';
+            }
+            $('#tag-group_in').append(html);
+
+            $('#tags-input').addClass('hide');
+            $('#tag-group').removeClass('hide');
+
+            $('#modal_footer').removeClass('hide');
+        }
+    });
+
+
+    $('#tag-group').addClass('hide');
+    $('#tags-input').removeClass('hide');
+
+    var tags = $('#tag-group_in').children();
+    for (var i = 0; i < tags.length; i++) {
+        $('#tags-input_in').tagsinput('add', tags[i].innerHTML);
+    }
+
 }
