@@ -119,7 +119,8 @@ function plot_stacked_bar(result, type) {
                     if (data.datasets.length - 1 != tooltipItem.datasetIndex) {
                         show_appliance(tooltipItem.datasetIndex, data.datasets[tooltipItem.datasetIndex].backgroundColor);
                     }
-                    return data.datasets[tooltipItem.datasetIndex].label + ' : ' + tooltipItem.xLabel + '%';
+
+                    return appliances[tooltipItem.datasetIndex].Name + ' : ' + tooltipItem.xLabel + '%';
                 }
             },
             position: 'cursor'
@@ -470,8 +471,8 @@ function edit_appliance() {
             id: appID
         },
         function (result) {
-
-            appliances[dataID].Tags_Tags_ID = result;
+            appliances[dataID].Tags_Tags_ID = result[1];
+            appliances[dataID].Name = result[0];
             get_compare(appliances);
 
         });

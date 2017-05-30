@@ -87,4 +87,8 @@ if(!$result) {
     exit;
 }
 
-echo json_encode($tag_id);
+$results = [];
+$results[] = $name;
+$results[] = $tag_id;
+
+echo json_encode($results);
