@@ -86,3 +86,5 @@ if(!$result) {
     echo "Error: " . $mysqli->error . "\n";
     exit;
 }
+
+echo json_encode($tag_id);

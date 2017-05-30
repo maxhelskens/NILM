@@ -275,7 +275,7 @@ $.getJSON("assets/php/get_tags.php",
 
         var option = document.createElement("option");
         option.text = '- Select a tag -';
-        option.value = '';
+        option.value = 'No Label';
 
         select.appendChild(option);
 
@@ -320,13 +320,11 @@ function show_appliance(id, color) {
         document.getElementById('pricetot').innerText = '€'+appliances[id].Total_price;
 
         /** SET COMPARE CHART **/
-        console.log(compare_data[id]);
-        if(compare_data[id] != null) {
+        if(compare_data[id].length > 0) {
             var canvas = document.getElementById("compare");
             var panel = canvas.parentNode;
 
             panel.innerHTML = "<canvas id='compare' height='50%' width='400'></canvas>";
-
 
             plot_compare(compare_data[id]);
         }
@@ -341,6 +339,8 @@ function show_appliance(id, color) {
                 " display: flex; align-items: center; justify-content: center;'>" +
                 "<h4>Assign a tag to the appliance in order to compare to other users.</h4>" +
                 "</div>";
+
+            document.getElementById('comparison').innerText = 'Unable to compare this appliance';
         }
 
         /** CLEAR CHART **/
@@ -413,7 +413,7 @@ function show_appliance(id, color) {
                         fontFamily: "'Open Sans Bold', sans-serif",
                         fontSize: 11,
                         autoSkip: true,
-                        maxTicksLimit: 20
+                        maxTicksLimit: 10
                     },
                     scaleLabel: {
                         display: true,
@@ -463,19 +463,22 @@ function edit_appliance() {
     const e = document.getElementById("tags_select");
     const tag = e.options[e.selectedIndex].value;
 
-
     $.getJSON("assets/php/update_appliance.php",
         {
             new_name: name,
             tag: tag,
             id: appID
+        },
+        function (result) {
+
+            appliances[dataID].Tags_Tags_ID = result;
+            get_compare(appliances);
+
         });
 
     appliances[dataID].Name = name;
     document.getElementById('appliance_name').innerText = name;
     $('#myModal').modal('hide');
-
-
 }
 
 
@@ -489,168 +492,206 @@ function edit_appliance() {
 function get_compare (result) {
 
     for (var i = 0; i < result.length; i++) {
-        if (appliances[i].Tags_Tags_ID != 1) {
-            $.getJSON('assets/php/get_same_devices.php',
-                {
-                    tag_id: appliances[i].Tags_Tags_ID
-                },
-                function (res) {
-                    compare_data[i] = res;
-                }
-            );
-        }
 
+        $.getJSON('assets/php/get_same_devices.php',
+            {
+                tag_id: appliances[i].Tags_Tags_ID,
+                index: i
+            },
+            function (res) {
+                var index = res.pop();
+
+                if (appliances[index].Tags_Tags_ID != 1) {
+                    compare_data[index] = res;
+                }
+                else {
+                    compare_data[index] = [];
+                }
+
+                if (index == appliances.length - 1) {
+
+                    if (dataID != -1) {
+
+                        if(compare_data[dataID].length > 0) {
+                            var canvas = document.getElementById("compare");
+                            var panel = canvas.parentNode;
+
+                            panel.innerHTML = "<canvas id='compare' height='50%' width='400'></canvas>";
+
+                            plot_compare(compare_data[dataID]);
+                        }
+                        else {
+                            // Get the correct panel
+                            var canvas = document.getElementById("compare");
+                            var panel = canvas.parentNode;
+
+                            // Add a 'NO DATA' tag to the panel
+                            panel.innerHTML =
+                                "<div id='compare' style='width: 100%; height: 60px ; display: -webkit-flex;" +
+                                " display: flex; align-items: center; justify-content: center;'>" +
+                                "<h4>Assign a tag to the appliance in order to compare to other users.</h4>" +
+                                "</div>";
+
+                            document.getElementById('comparison').innerText = 'Unable to compare this appliance';
+                        }
+
+                    }
+                }
+            }
+        );
     }
 }
 
 function plot_compare (to_compare) {
 
-    /** CLEAR CHART **/
-    const ctx = document.getElementById("compare");
-    ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
+    if (to_compare.length > 0) {
+        /** CLEAR CHART **/
+        const ctx = document.getElementById("compare");
+        ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
 
-    const parentnode = ctx.parentNode;
-    const iframes = parentnode.querySelectorAll('iframe');
-    for (var i = 0; i < iframes.length; i++) {
-        iframes[i].parentNode.removeChild(iframes[i]);
-    }
+        const parentnode = ctx.parentNode;
+        const iframes = parentnode.querySelectorAll('iframe');
+        for (var i = 0; i < iframes.length; i++) {
+            iframes[i].parentNode.removeChild(iframes[i]);
+        }
 
-    if (window.innerWidth >= 992) {
-        ctx.height = 50;
-    }
-    else {
-        ctx.height = 50;
-    }
-
-
-    /** MODIFY DATA **/
-    const data = [];
-    const mydata = [];
-    var max = to_compare[0].Avg_tot_consumption;
-    var min = to_compare[0].Avg_tot_consumption;
-    var this_appl = 0;
-
-    for ( i = 0; i < to_compare.length; i++) {
-
-        temp = {};
-
-        if (to_compare[i].Users_ID != sessionStorage.getItem('user')) {
-            temp.x = parseInt(to_compare[i].Avg_tot_consumption);
-            temp.y = 0;
-            temp.r = 10;
-
-            data.push(temp);
+        if (window.innerWidth >= 992) {
+            ctx.height = 50;
         }
         else {
-            temp.x = parseInt(to_compare[i].Avg_tot_consumption);
-            temp.y = 0;
-            temp.r = 10;
-
-            mydata.push(temp);
-
-            this_appl = to_compare[i].Avg_tot_consumption
+            ctx.height = 50;
         }
 
-        if (to_compare[i].Avg_tot_consumption > max) {
-            max = to_compare[i].Avg_tot_consumption;
+
+        /** MODIFY DATA **/
+        const data = [];
+        const mydata = [];
+        var max = to_compare[0].Avg_tot_consumption;
+        var min = to_compare[0].Avg_tot_consumption;
+        var this_appl = 0;
+
+        for ( i = 0; i < to_compare.length; i++) {
+
+            temp = {};
+
+            if (to_compare[i].Users_ID != sessionStorage.getItem('user')) {
+                temp.x = parseInt(to_compare[i].Avg_tot_consumption);
+                temp.y = 0;
+                temp.r = 10;
+
+                data.push(temp);
+            }
+            else {
+                temp.x = parseInt(to_compare[i].Avg_tot_consumption);
+                temp.y = 0;
+                temp.r = 10;
+
+                mydata.push(temp);
+
+                this_appl = to_compare[i].Avg_tot_consumption
+            }
+
+            if (to_compare[i].Avg_tot_consumption > max) {
+                max = to_compare[i].Avg_tot_consumption;
+            }
+            if (to_compare[i].Avg_tot_consumption < min) {
+                min = to_compare[i].Avg_tot_consumption
+            }
+
         }
-        if (to_compare[i].Avg_tot_consumption < min) {
-            min = to_compare[i].Avg_tot_consumption
-        }
 
-    }
-
-    const bubbleChartData =
-        {
-            datasets: [
-                {
-                    label: 'Appliances',
-                    data: data,
-                    backgroundColor: get_color($('#type').val(), 0),
-                    hoverBackgroundColor: get_color($('#type').val(), 0)
-                }, {
-                    label: 'My Appliances',
-                    data: mydata,
-                    backgroundColor: get_color($('#type').val(), Math.ceil(appliances.length/2)),
-                    hoverBackgroundColor: get_color($('#type').val(), Math.ceil(appliances.length/2))
-                }]
-        };
+        const bubbleChartData =
+            {
+                datasets: [
+                    {
+                        label: 'Appliances',
+                        data: data,
+                        backgroundColor: get_color($('#type').val(), 0),
+                        hoverBackgroundColor: get_color($('#type').val(), 0)
+                    }, {
+                        label: 'My Appliances',
+                        data: mydata,
+                        backgroundColor: get_color($('#type').val(), Math.ceil(appliances.length/2)),
+                        hoverBackgroundColor: get_color($('#type').val(), Math.ceil(appliances.length/2))
+                    }]
+            };
 
 
-    /** PLOT CHART **/
-    var scatterChart = new Chart(ctx, {
-        type: 'bubble',
-        data: bubbleChartData,
-        options: {
-            tooltips: {
-                enabled: false
-            },
-            scales: {
-                xAxes: [{
-                    display: true,
-                    ticks: {
-                        beginAtZero: false,
-                        fontFamily: "'Open Sans Bold', sans-serif",
-                        fontSize: 11,
-                        maxTicksLimit: 2
-                    },
-                    scaleLabel: {
+        /** PLOT CHART **/
+        var scatterChart = new Chart(ctx, {
+            type: 'bubble',
+            data: bubbleChartData,
+            options: {
+                tooltips: {
+                    enabled: false
+                },
+                scales: {
+                    xAxes: [{
                         display: true,
-                        labelString: 'Consumption ( '+ get_unit($('#type').val())+' )'
-                    },
-                    gridLines: {
-                        display: false
-                    }
-                }],
-                yAxes: [{
-                    display: false,
-                    gridLines: {
+                        ticks: {
+                            beginAtZero: false,
+                            fontFamily: "'Open Sans Bold', sans-serif",
+                            fontSize: 11,
+                            maxTicksLimit: 2
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Consumption ( '+ get_unit($('#type').val())+' )'
+                        },
+                        gridLines: {
+                            display: false
+                        }
+                    }],
+                    yAxes: [{
                         display: false,
-                        color: "#fff",
-                        zeroLineColor: "#fff",
-                        zeroLineWidth: 0
-                    },
-                    ticks: {
-                        beginAtZero: false,
-                        fontFamily: "'Open Sans Bold', sans-serif",
-                        fontSize: 11
-                    }
-                }]
-            },
-            legend: {
-                display: false
-            },
-            responsive: true,
-            maintainAspectRatio: false
-        }
-    });
+                        gridLines: {
+                            display: false,
+                            color: "#fff",
+                            zeroLineColor: "#fff",
+                            zeroLineWidth: 0
+                        },
+                        ticks: {
+                            beginAtZero: false,
+                            fontFamily: "'Open Sans Bold', sans-serif",
+                            fontSize: 11
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
 
 
-    /** CALCULATE STATUS **/
+        /** CALCULATE STATUS **/
 
-    if (to_compare.length > 1) {
-        const percentage = (this_appl - min) / (max - min);
+        if (to_compare.length > 1) {
+            const percentage = (this_appl - min) / (max - min);
 
-        if (percentage == 1) {
-            // HIGHEST CONSUMER
-            document.getElementById('comparison').innerText = 'Yours is the highest consumer';
-        }
-        else if (percentage == 0) {
-            // LOWEST CONSUMER
-            document.getElementById('comparison').innerText = 'Yours is the lowest consumer';
-        }
-        else if (percentage <= 0.5) {
-            // LOWER CONSUMER
-            document.getElementById('comparison').innerText = 'Bottem ' + (percentage * 100) + '% lowest consumer';
+            if (percentage == 1) {
+                // HIGHEST CONSUMER
+                document.getElementById('comparison').innerText = 'Yours is the highest consumer';
+            }
+            else if (percentage == 0) {
+                // LOWEST CONSUMER
+                document.getElementById('comparison').innerText = 'Yours is the lowest consumer';
+            }
+            else if (percentage <= 0.5) {
+                // LOWER CONSUMER
+                document.getElementById('comparison').innerText = 'Bottem ' + (percentage * 100) + '% lowest consumer';
+            }
+            else {
+                // HIGHER CONSUMER
+                document.getElementById('comparison').innerText = 'Top ' + (100 - (percentage * 100)) + ' highest consumers';
+            }
         }
         else {
-            // HIGHER CONSUMER
-            document.getElementById('comparison').innerText = 'Top ' + (100 - (percentage * 100)) + ' highest consumers';
+            // ONLY ONE CONSUMER
+            document.getElementById('comparison').innerText = 'Unable to compare this appliance';
         }
-    }
-    else {
-        // ONLY ONE CONSUMER
-        document.getElementById('comparison').innerText = 'Unable to compare this appliance';
     }
 }
 

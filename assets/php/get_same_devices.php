@@ -18,8 +18,15 @@ else {
     exit();
 }
 
+if (isset($_GET['index'])) {
+    $index = $_GET['index'];
+}
+else {
+    exit();
+}
 
-/*****************************
+
+    /*****************************
  *       Connect to db       *
  *****************************/
 
@@ -58,5 +65,6 @@ $appliances =  array();
 while ($appliance = $result->fetch_assoc()) {
     $appliances[] = $appliance;
 }
+$appliances[] = $index;
 
 echo json_encode($appliances);
