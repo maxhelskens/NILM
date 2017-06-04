@@ -302,20 +302,21 @@ function plot_price_chart(data, sample) {
         type: 'bar',
         data: {
             labels: labels,
-            datasets: [{
-                label: 'gas',
-                data: data.gas,
-                backgroundColor: '#7FCDBD'
-            },
+                datasets: [{
+                    label: 'gas',
+                    data: data.gas,
+                    backgroundColor: '#7FCDBD'
+                },
                 {
-                    label: 'water',
-                    data: data.water,
-                    backgroundColor: '#85C0D9'
-                },{
                     label: 'electricity',
                     data: data.electricity,
                     backgroundColor: '#FFDC92'
-                }]
+                },
+                    {
+                        label: 'water',
+                        data: data.water,
+                        backgroundColor: '#85C0D9'
+                    }]
         },
         options: {
             responsive: true,
