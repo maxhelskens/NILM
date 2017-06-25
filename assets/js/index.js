@@ -9,20 +9,19 @@
  ********************************/
 
 /** GAS COLORS **/
-color_gas = d3.scale.linear().domain([0,5])
+color_gas = d3.scale.linear().domain([0, 5])
     .interpolate(d3.interpolateHcl)
     .range([d3.rgb("#E0F3F7"), d3.rgb('#007038')]);
 
 /** WATER COLORS **/
-color_water = d3.scale.linear().domain([0,6])
+color_water = d3.scale.linear().domain([0, 6])
     .interpolate(d3.interpolateHcl)
     .range([d3.rgb("#DAE8F5"), d3.rgb('#00579A')]);
 
 /** ELECTRICITY COLORS **/
-color_electricity = d3.scale.linear().domain([0,7])
+color_electricity = d3.scale.linear().domain([0, 7])
     .interpolate(d3.interpolateHcl)
     .range([d3.rgb("#FFF8CE"), d3.rgb('#ED6B2D')]);
-
 
 
 week_prices = {};
@@ -43,7 +42,7 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
-            color_gas = d3.scale.linear().domain([0,result.length+1])
+            color_gas = d3.scale.linear().domain([0, result.length + 1])
                 .interpolate(d3.interpolateHcl)
                 .range([d3.rgb("#E0F3F7"), d3.rgb('#007038')]);
 
@@ -72,7 +71,7 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
-            color_water = d3.scale.linear().domain([0,result.length+1])
+            color_water = d3.scale.linear().domain([0, result.length + 1])
                 .interpolate(d3.interpolateHcl)
                 .range([d3.rgb("#DAE8F5"), d3.rgb('#00579A')]);
 
@@ -101,7 +100,7 @@ $.getJSON("assets/php/get_appliances.php",
     },
     function (result) {
         if (result.length > 0) {
-            color_electricity = d3.scale.linear().domain([0,result.length+1])
+            color_electricity = d3.scale.linear().domain([0, result.length + 1])
                 .interpolate(d3.interpolateHcl)
                 .range([d3.rgb("#FFF8CE"), d3.rgb('#ED6B2D')]);
 
@@ -130,7 +129,7 @@ $.getJSON("assets/php/get_self_compare.php",
         user: sessionStorage.getItem('user')
     },
     function (result) {
-        result =JSON.parse(result);
+        result = JSON.parse(result);
 
         handle_price_data(result, 'week');
     }
@@ -143,7 +142,7 @@ $.getJSON("assets/php/get_self_compare.php",
         user: sessionStorage.getItem('user')
     },
     function (result) {
-        result =JSON.parse(result);
+        result = JSON.parse(result);
 
         handle_price_data(result, 'month');
     }
@@ -173,7 +172,7 @@ function plot_doughnut(appliances, tag) {
     var data = [];
     var colors = [];
     var total_p = 0;
-    for ( var i = 0; i < appliances.length; i++) {
+    for (var i = 0; i < appliances.length; i++) {
         colors.push(color_scale(i));
         data.push(parseInt(appliances[i].Percentage));
         total_p += parseInt(appliances[i].Percentage);
@@ -215,7 +214,6 @@ function plot_doughnut(appliances, tag) {
 
 function handle_price_data(result, sample) {
     /** Modify data **/
-    console.log(result);
     var keys = Object.keys(result);
 
     var gas_data = [];
@@ -223,14 +221,7 @@ function handle_price_data(result, sample) {
     var electricity_data = [];
     var labels = [];
 
-    for (var i = 0; i < 12 - keys.length; i++) {
-        labels.push('');
-        gas_data.push(0);
-        water_data.push(0);
-        electricity_data.push(0);
-    }
-
-    for(var i = 0; i < keys.length; i++) {
+    for (var i = 0; i < keys.length; i++) {
         labels.push(keys[i]);
         var prices = result[keys[i]];
         var prices_keys = Object.keys(result[keys[i]]);
@@ -259,6 +250,13 @@ function handle_price_data(result, sample) {
         else {
             electricity_data.push(0);
         }
+    }
+
+    for (var i = 0; i < 12 - keys.length; i++) {
+        labels.push('No data');
+        gas_data.push(0);
+        water_data.push(0);
+        electricity_data.push(0);
     }
 
     if (sample == 'week') {
@@ -290,7 +288,7 @@ function plot_price_chart(data, sample) {
     else {
         ctx.height = 300;
 
-        var labels =['','','','','','','','','','','',''];
+        var labels = ['', '', '', '', '', '', '', '', '', '', '', ''];
     }
 
     const parentnode = ctx.parentNode;
@@ -302,21 +300,21 @@ function plot_price_chart(data, sample) {
         type: 'bar',
         data: {
             labels: labels,
-                datasets: [{
-                    label: 'gas',
-                    data: data.gas,
-                    backgroundColor: '#7FCDBD'
-                },
-                {
-                    label: 'electricity',
-                    data: data.electricity,
-                    backgroundColor: '#FFDC92'
-                },
-                    {
-                        label: 'water',
-                        data: data.water,
-                        backgroundColor: '#85C0D9'
-                    }]
+            datasets: [{
+                label: 'gas',
+                data: data.gas,
+                backgroundColor: '#7FCDBD'
+            },
+            {
+                label: 'electricity',
+                data: data.electricity,
+                backgroundColor: '#FFDC92'
+            },
+            {
+                label: 'water',
+                data: data.water,
+                backgroundColor: '#85C0D9'
+            }]
         },
         options: {
             responsive: true,
@@ -325,7 +323,7 @@ function plot_price_chart(data, sample) {
                 yAxes: [{
                     stacked: true,
                     ticks: {
-                        beginAtZero:true
+                        beginAtZero: true
                     },
                     scaleLabel: {
                         display: true,
@@ -335,14 +333,14 @@ function plot_price_chart(data, sample) {
                 xAxes: [{
                     stacked: true,
                     ticks: {
-                        beginAtZero:true
+                        beginAtZero: true
                     },
                     gridLines: {
-                        display:false
+                        display: false
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Time ( '+ sample +' )'
+                        labelString: 'Time ( ' + sample + ' )'
                     }
                 }]
 
@@ -374,14 +372,14 @@ function show_no_data(tag) {
 
     // Check if the window is mobile or not
     var height = "0px";
-    (function($, viewport){
+    (function ($, viewport) {
 
         // Executes in XS and SM breakpoints
-        if( viewport.is('<md') ) {
+        if (viewport.is('<md')) {
             height = "100%";
         }
         else {
-            var dummie = [{Percentage: 90, Name:"dummie"}];
+            var dummie = [{Percentage: 90, Name: "dummie"}];
             plot_doughnut(dummie, tag);
 
             height = canvas.offsetHeight + 4 + "px";
@@ -415,26 +413,26 @@ function show_no_data(tag) {
  *                                       *
  *****************************************/
 
-$('#radioBtn a').on('click', function(){
+$('#radioBtn a').on('click', function () {
     var sel = $(this).data('title');
     var tog = $(this).data('toggle');
-    $('#'+tog).prop('value', sel);
+    $('#' + tog).prop('value', sel);
 
-    if ($('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').hasClass('active')) {
-        $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    if ($('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').hasClass('active')) {
+        $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('active').addClass('notActive');
     }
     else {
-        $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+        $('a[data-toggle="' + tog + '"]').not('[data-title="' + sel + '"]').removeClass('notActive').addClass('active');
     }
 
-    if ($('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').hasClass('active')) {
-        $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+    if ($('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').hasClass('active')) {
+        $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('active').addClass('notActive');
     }
     else {
-        $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+        $('a[data-toggle="' + tog + '"][data-title="' + sel + '"]').removeClass('notActive').addClass('active');
     }
 
-    var sample = $('a[data-toggle="'+tog+'"]').filter('.active').attr('data-title');
+    var sample = $('a[data-toggle="' + tog + '"]').filter('.active').attr('data-title');
     if (sample == 'week') {
         plot_price_chart(week_prices, 'week');
     }
@@ -445,16 +443,16 @@ $('#radioBtn a').on('click', function(){
 
 $(function () {
     $('#datetimepicker0').datetimepicker({
-        format:'DD-MM-YYYY HH:mm'
+        format: 'DD-MM-YYYY HH:mm'
     });
     $('#datetimepicker1').datetimepicker({
-        format:'DD-MM-YYYY HH:mm'
+        format: 'DD-MM-YYYY HH:mm'
     });
     $('#datetimepicker2').datetimepicker({
-        format:'DD-MM-YYYY HH:mm'
+        format: 'DD-MM-YYYY HH:mm'
     });
     $('#datetimepicker3').datetimepicker({
-        format:'DD-MM-YYYY HH:mm'
+        format: 'DD-MM-YYYY HH:mm'
     });
 });
 
@@ -491,17 +489,17 @@ function to_input(label, icon, type) {
         width = label.innerWidth();
     }
 
-    var input = $('<input id="' + label.attr('id') + '" style="display: inline; height: 100%; width: ' + width + 'px;"/>').val( label.text().trim() );
-    label.replaceWith( input );
+    var input = $('<input id="' + label.attr('id') + '" style="display: inline; height: 100%; width: ' + width + 'px;"/>').val(label.text().trim());
+    label.replaceWith(input);
 
-    var save = function(){
+    var save = function () {
         var i = '';
         if (icon != '') {
-            i ='<i class="fa fa-' + icon + '"></i>';
+            i = '<i class="fa fa-' + icon + '"></i>';
         }
 
-        var p = $('<' + type + ' id="' + input.attr('id') + '"> ' + i +' ' + input.val().trim() + '</' + type + '>');
-        input.replaceWith( p );
+        var p = $('<' + type + ' id="' + input.attr('id') + '"> ' + i + ' ' + input.val().trim() + '</' + type + '>');
+        input.replaceWith(p);
 
         $('#modal_footer').removeClass('hide');
     };
@@ -510,10 +508,10 @@ function to_input(label, icon, type) {
 }
 function to_tags_input() {
 
-    window.addEventListener('click', function(e){
-        if (document.getElementById('clickbox').contains(e.target)){
+    window.addEventListener('click', function (e) {
+        if (document.getElementById('clickbox').contains(e.target)) {
             // Clicked in box
-        } else{
+        } else {
             $('#tag-group_in').empty();
             tags = $('#tags-input_in').tagsinput('items');
             var html = '';

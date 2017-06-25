@@ -27,12 +27,12 @@
     <![endif]-->
 
     <script>
-    if (sessionStorage.getItem('status') == null || sessionStorage.getItem('status') == ''){
-        window.location = 'login.html';
-    }
-    else if (sessionStorage.getItem('gas') == 'false'){
-        window.location = 'index.html';
-    }
+        if (sessionStorage.getItem('status') == null || sessionStorage.getItem('status') == '') {
+            window.location = 'login.html';
+        }
+        else if (sessionStorage.getItem('gas') == 'false') {
+            window.location = 'index.html';
+        }
     </script>
 </head>
 
@@ -45,7 +45,8 @@
     <!--header start-->
     <header class="header black-bg">
         <div class="sidebar-toggle-box">
-            <div style="color: white;" class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+            <div style="color: white;" class="fa fa-bars tooltips" data-placement="right"
+                 data-original-title="Toggle Navigation"></div>
         </div>
         <!--logo start-->
         <a href="index.html" class="logo"><b>NILM Dash</b></a>
@@ -100,7 +101,7 @@
 
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker0'>
-                                            <input type='text' class="form-control" />
+                                            <input type='text' class="form-control"/>
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -108,7 +109,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker1'>
-                                            <input type='text' class="form-control" />
+                                            <input type='text' class="form-control"/>
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -160,7 +161,9 @@
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
 
-                <p class="centered"><a data-toggle="modal" href="login.html#profileModal"><img src="assets/img/max.png" class="img-circle" width="80"></a></p>
+                <p class="centered"><a data-toggle="modal" href="#profileModal"><img src="assets/img/max.png"
+                                                                                               class="img-circle"
+                                                                                               width="80"></a></p>
                 <h5 id="username" class="centered">Max Helskens</h5>
 
                 <div id="notify-row-side" class="row centered visible-xs" style="margin-left: 10px; margin-right: 10px">
@@ -188,12 +191,15 @@
                                 <p class="green">You have 1 new message</p>
                             </div>
                             <div style="background: white; padding: 12px 0 15px 10px;">
-                                <a href="#" style="width: 100%; display: inline-block; line-height: normal; color: #797979">
-                                  <span class="photo" style="display: block"><img alt="avatar" src="assets/img/CORE.png" style="border-radius: 2px 2px 2px 2px; float: left;
+                                <a href="#"
+                                   style="width: 100%; display: inline-block; line-height: normal; color: #797979">
+                                  <span class="photo" style="display: block"><img alt="avatar" src="assets/img/CORE.png"
+                                                                                  style="border-radius: 2px 2px 2px 2px; float: left;
                                         height: 40px;margin-right: 4px;width: 40px;"></span>
                                     <span class="subject" style="display: block">
                                     <span class="from" style="font-size: 12px; font-weight: 600">CORE</span>
-                                    <span class="time" style="font-size: 11px; font-style: italic; font-weight: bold; position: absolute; right: 60px;">Just now</span>
+                                    <span class="time"
+                                          style="font-size: 11px; font-style: italic; font-weight: bold; position: absolute; right: 60px;">Just now</span>
                                     </span>
                                     <span class="message" style="padding-top: 5px; font-size: 11px">
                                         Congrats, you are our first user!
@@ -216,7 +222,7 @@
 
                                         <div class="form-group">
                                             <div class='input-group date' id='datetimepicker2'>
-                                                <input type='text' class="form-control" />
+                                                <input type='text' class="form-control"/>
                                                 <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -224,7 +230,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class='input-group date' id='datetimepicker3'>
-                                                <input type='text' class="form-control" />
+                                                <input type='text' class="form-control"/>
                                                 <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -315,7 +321,8 @@
             <!-- page start-->
             <h3><i class="fa fa-angle-right"></i>
                 <text id="appliance_name">Single appliance</text>
-                <a class="btn btn-default" data-toggle="modal" href="dash_gas.html#myModal"> <i class="fa fa-pencil"></i></a>
+                <a class="btn btn-default" data-toggle="modal" href="dash_gas.html#myModal"> <i
+                        class="fa fa-pencil"></i></a>
             </h3>
             <!-- Modal -->
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -329,7 +336,8 @@
                         <form id="form_name" role="form" data-toggle="validator">
                             <div class="modal-body">
                                 <div class="form-group has-feedback">
-                                    <input id="new_name" type="text" class="form-control" placeholder="New appliance name" required>
+                                    <input id="new_name" type="text" class="form-control"
+                                           placeholder="New appliance name" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <select id="tags_select" class="form-control" id="sel1">
@@ -349,7 +357,8 @@
                 <div class="row mt">
                     <div class="col-md-8 col-xs-12" style="margin-bottom: 30px">
                         <div class="content-panel" style="position: relative">
-                            <div id="preloader" class="preloader" style=" background: transparent url(assets/img/preloader_gas.gif) no-repeat center center"></div>
+                            <div id="preloader" class="preloader"
+                                 style=" background: transparent url(assets/img/preloader_gas.gif) no-repeat center center"></div>
                             <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10">
                                 <label style="visibility: hidden"></label>
                             </div>
@@ -363,6 +372,7 @@
                             <div class="white-panel pn" style="padding-bottom: 10px">
                                 <div class="white-header">
                                     <h5>CHARACTERISTICS</h5>
+                                    <a data-toggle="modal" href="#historyModal" style="position: absolute; top:10px; right:10px"><i class="fa fa-list-ul"></i></a>
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-6 col-xs-offset-1" style="text-align: left">
@@ -442,7 +452,8 @@
                     </div>
                     <div class="col-xs-12 col-md-8">
                         <div class="content-panel" style="overflow: hidden">
-                            <div id="preloader2" class="preloader" style=" background: transparent url(assets/img/preloader_gas.gif) no-repeat center center"></div>
+                            <div id="preloader2" class="preloader"
+                                 style=" background: transparent url(assets/img/preloader_gas.gif) no-repeat center center"></div>
                             <div class="panel-body text-center">
                                 <canvas id="compare" height="50%" width="400"></canvas>
                             </div>
@@ -453,6 +464,31 @@
             <!-- page end-->
         </section>
     </section><!-- /MAIN CONTENT -->
+
+    <!-- Modal -->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="historyModal"
+         class="modal fade">
+        <div class="modal-dialog" style="margin-top:50px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Appliance history</h4>
+                </div>
+                <div class="modal-body">
+                    <table style="width:100%">
+                        <tr>
+                            <th>Start time</th>
+                            <th>Duration</th>
+                        </tr>
+                        <tbody id="historyTable">
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- modal -->
 
     <!-- Modal -->
     <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="profileModal"
@@ -471,7 +507,9 @@
                         <button type="button" class="btn btn-default" style="width: 85%">Upload new picture</button>
                     </div>
                     <div class="centered">
-                        <button type="button" class="btn btn-default" style="margin-top: 5px ;width: 85%">Change password</button>
+                        <button type="button" class="btn btn-default" style="margin-top: 5px ;width: 85%">Change
+                            password
+                        </button>
                     </div>
                     <br>
                     <div class="row" style="margin-right:0; margin-left: 7.5%; width: 85%">
@@ -479,7 +517,8 @@
                             <h5 id="user"><i class="fa fa-user"></i> Max Helskens</h5>
                         </div>
                         <div class="col-xs-1">
-                            <a style="cursor: pointer;" onclick="to_input($('#user'), 'user', 'h5')"><h5><i class="fa fa-pencil"></i></h5></a>
+                            <a style="cursor: pointer;" onclick="to_input($('#user'), 'user', 'h5')"><h5><i
+                                    class="fa fa-pencil"></i></h5></a>
                         </div>
                     </div>
                     <div class="row" style="margin-right:0; margin-left: 7.5%; width: 85%">
@@ -487,18 +526,21 @@
                             <h5 id="email"><i class="fa fa-envelope"></i> max.helskens@thinkcore.be</h5>
                         </div>
                         <div class="col-xs-1">
-                            <a style="cursor: pointer;" onclick="to_input($('#email'), 'envelope', 'h5')"><h5><i class="fa fa-pencil"></i></h5></a>
+                            <a style="cursor: pointer;" onclick="to_input($('#email'), 'envelope', 'h5')"><h5><i
+                                    class="fa fa-pencil"></i></h5></a>
                         </div>
                     </div>
                     <br>
                     <div id="clickbox" class="row" style="margin-right:0; margin-left: 7.5%; width: 85%">
-                        <div id="tag-group" class="col-xs-10" style="white-space: nowrap; overflow-x: scroll; overflow-y: hidden;">
+                        <div id="tag-group" class="col-xs-10"
+                             style="white-space: nowrap; overflow-x: scroll; overflow-y: hidden;">
                             <div id="tag-group_in">
                                 <span class="label label-default">FL0398672</span>
                                 <span class="label label-default">FL0398372</span>
                             </div>
                         </div>
-                        <div id="tags-input" class="col-xs-10 hide" style="white-space: nowrap; overflow-x: scroll; overflow-y: hidden;">
+                        <div id="tags-input" class="col-xs-10 hide"
+                             style="white-space: nowrap; overflow-x: scroll; overflow-y: hidden;">
                             <input id="tags-input_in" class="form-control hide" data-role="tagsinput">
                         </div>
                         <div class="col-xs-1">
@@ -516,7 +558,8 @@
                             <label> €<b id="ga_price">0.08</b> per kWh</label>
                         </div>
                         <div class="col-xs-1">
-                            <a style="cursor: pointer;" onclick="to_input($('#ga_price'), '', 'b')"><i class="fa fa-pencil"></i></a>
+                            <a style="cursor: pointer;" onclick="to_input($('#ga_price'), '', 'b')"><i
+                                    class="fa fa-pencil"></i></a>
                         </div>
                     </div>
 
@@ -526,7 +569,8 @@
                             <label> €<b id="wa_price">0.80</b> per m<sup>3</sup></label>
                         </div>
                         <div class="col-xs-1">
-                            <a style="cursor: pointer;" onclick="to_input($('#wa_price'), '', 'b')"><i class="fa fa-pencil"></i></a>
+                            <a style="cursor: pointer;" onclick="to_input($('#wa_price'), '', 'b')"><i
+                                    class="fa fa-pencil"></i></a>
                         </div>
                     </div>
 
@@ -536,7 +580,8 @@
                             <label> €<b id="el_price">0.35</b> per kWh</label>
                         </div>
                         <div class="col-xs-1">
-                            <a style="cursor: pointer; " onclick="to_input($('#el_price'), '', 'b')" ><i class="fa fa-pencil"></i></a>
+                            <a style="cursor: pointer; " onclick="to_input($('#el_price'), '', 'b')"><i
+                                    class="fa fa-pencil"></i></a>
                         </div>
                     </div>
                 </div>

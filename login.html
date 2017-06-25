@@ -26,7 +26,7 @@
     <![endif]-->
 
     <script>
-        sessionStorage.setItem('status','');
+        sessionStorage.setItem('status', '');
     </script>
 
 </head>
@@ -45,11 +45,13 @@ MAIN CONTENT
 
                 <form id="form_l" role="form" data-toggle="validator">
                     <div class="form-group has-feedback">
-                        <input id="login_email" name="login_email" type="email" class="form-control" placeholder="Email" required>
+                        <input id="login_email" name="login_email" type="email" class="form-control" placeholder="Email"
+                               required>
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group has-feedback">
-                        <input id="login_password" name="login_password" type="password" class="form-control" placeholder="Password" required>
+                        <input id="login_password" name="login_password" type="password" class="form-control"
+                               placeholder="Password" required>
                         <div class="help-block with-errors"></div>
                     </div>
 
@@ -59,7 +61,8 @@ MAIN CONTENT
 
                             </span>
                     </label>
-                    <button onClick="form_submit();" class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN IN
+                    <button onClick="form_submit();" class="btn btn-theme btn-block" type="submit"><i
+                            class="fa fa-lock"></i> SIGN IN
                     </button>
                     <hr>
 
@@ -77,54 +80,69 @@ MAIN CONTENT
                     <div style="position: relative; height: 200px; overflow-x: hidden; overflow-y: scroll;">
                         <div id="step1" style="height: 100%;">
                             <div class="form-group has-feedback">
-                                <input id="new_email" name="new_email" type="email" class="form-control" placeholder="Email"  required>
+                                <input id="new_email" name="new_email" type="email" class="form-control"
+                                       placeholder="Email" required>
                                 <div class="help-block with-errors"></div>
                             </div>
 
                             <div class="form-group">
                                 <div class="form-group">
-                                    <input name="password[0]" type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" required>
+                                    <input name="password[0]" type="password" data-minlength="6" class="form-control"
+                                           id="inputPassword" placeholder="Password" required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                                 <div class="form-group">
-                                    <input name="password[1]" type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm password" required>
+                                    <input name="password[1]" type="password" class="form-control"
+                                           id="inputPasswordConfirm" data-match="#inputPassword"
+                                           data-match-error="Whoops, these don't match" placeholder="Confirm password"
+                                           required>
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
 
-                            <a class="btn btn-theme btn-block" onclick="to_step2()"><i class="fa fa-arrow-right"></i> Next</a>
+                            <a class="btn btn-theme btn-block" onclick="to_step2()"><i class="fa fa-arrow-right"></i>
+                                Next</a>
                         </div>
                         <div id="step2" style="display: none; position: absolute; top: 0; height: 100%; width: 100%">
                             <div class="form-group">
-                                <input id="f_name" name="f_name" type="text" class="form-control" placeholder="First name"  required>
+                                <input id="f_name" name="f_name" type="text" class="form-control"
+                                       placeholder="First name" required>
                                 <div class="help-block with-errors"></div>
                             </div>
                             <div class="form-group">
-                                <input id="l_name" name="l_name" type="text" class="form-control" placeholder="Last Name" required>
+                                <input id="l_name" name="l_name" type="text" class="form-control"
+                                       placeholder="Last Name" required>
                                 <div class="help-block with-errors"></div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <a class="btn btn-default btn-block" onclick="back_to_step1()"><i class="fa fa-arrow-left"></i> Back</a>
+                                    <a class="btn btn-default btn-block" onclick="back_to_step1()"><i
+                                            class="fa fa-arrow-left"></i> Back</a>
                                 </div>
                                 <div class="col-xs-6">
-                                    <a class="btn btn-theme btn-block" onclick="to_step3()"><i class="fa fa-arrow-right"></i> Next</a>
+                                    <a class="btn btn-theme btn-block" onclick="to_step3()"><i
+                                            class="fa fa-arrow-right"></i> Next</a>
                                 </div>
                             </div>
                         </div>
                         <div id="step3" style="display: none; position: absolute; top: 0; width: 100%">
-                            <p>At this moment the NILM Dash application only supports the use of <a href="https://www.flukso.net">FLUKSO meters</a>.</p>
+                            <p>At this moment the NILM Dash application only supports the use of <a
+                                    href="https://www.flukso.net">FLUKSO meters</a>.</p>
                             <p>Type all your Flukso ID's seperated by a comma</p>
                             <div class="form-group">
-                                <input id="fluksos" name="fluksos" type="text" placeholder="Flukso ID's" class="form-control" data-role="tagsinput" required>
+                                <input id="fluksos" name="fluksos" type="text" placeholder="Flukso ID's"
+                                       class="form-control" data-role="tagsinput" required>
                                 <div class="help-block with-errors"></div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <a class="btn btn-default btn-block" onclick="back_to_step2()"><i class="fa fa-arrow-left"></i> Back</a>
+                                    <a class="btn btn-default btn-block" onclick="back_to_step2()"><i
+                                            class="fa fa-arrow-left"></i> Back</a>
                                 </div>
                                 <div class="col-xs-6">
-                                    <button onClick="form_submit();" class="btn btn-theme btn-block" type="submit"><i class="fa fa-check"></i> Finish</button>
+                                    <button onClick="form_submit();" class="btn btn-theme btn-block" type="submit"><i
+                                            class="fa fa-check"></i> Finish
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -182,7 +200,6 @@ MAIN CONTENT
 <script src="assets/js/validator.js"></script>
 
 
-
 <!--BACKSTRETCH-->
 <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
 <script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
@@ -190,10 +207,9 @@ MAIN CONTENT
     $.backstretch("assets/img/login-bg2.jpg", {speed: 500});
 
 
-
     function show_create() {
         $('#login').slideToggle('slow');
-        setTimeout(function (){
+        setTimeout(function () {
             $('#modal_header').text('Create an account');
 
             $('#create').slideToggle('slow');
@@ -206,7 +222,7 @@ MAIN CONTENT
 
     function show_login() {
         $('#create').slideToggle('slow');
-        setTimeout(function (){
+        setTimeout(function () {
             $('#modal_header').text('Sign in now');
 
             $('#login').slideToggle('slow');
@@ -219,37 +235,37 @@ MAIN CONTENT
 
     function back_to_step1() {
         $('#step2').hide('slide', {direction: 'right'}, 1000);
-        setTimeout(function (){
+        setTimeout(function () {
             $('#step1').show('slide', {direction: 'left'}, 1000);
         }, 100);
     }
 
     function to_step2() {
         $('#step1').hide('slide', {direction: 'left'}, 1000);
-        setTimeout(function (){
+        setTimeout(function () {
             $('#step2').show('slide', {direction: 'right'}, 1000);
         }, 100);
     }
 
     function back_to_step2() {
         $('#step3').hide('slide', {direction: 'right'}, 1000);
-        setTimeout(function (){
+        setTimeout(function () {
             $('#step2').show('slide', {direction: 'left'}, 1000);
         }, 100);
     }
 
     function to_step3() {
         $('#step2').hide('slide', {direction: 'left'}, 1000);
-        setTimeout(function (){
+        setTimeout(function () {
             $('#step3').show('slide', {direction: 'right'}, 1000);
         }, 100);
     }
 
 
-    $("#form_l").submit(function(e) {
+    $("#form_l").submit(function (e) {
         e.preventDefault();
     });
-    $("#form_c").submit(function(e) {
+    $("#form_c").submit(function (e) {
         e.preventDefault();
     });
 
@@ -269,7 +285,7 @@ MAIN CONTENT
 
                 console.log(result[0]);
                 if (result[0].id != -1) {
-                    sessionStorage.setItem('status','loggedIn');
+                    sessionStorage.setItem('status', 'loggedIn');
                     sessionStorage.setItem('user', result[0].ID);
                     sessionStorage.setItem('first name', result[0].F_Name);
                     sessionStorage.setItem('last name', result[0].L_Name);

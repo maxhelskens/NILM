@@ -56,6 +56,7 @@ function get_color (type, index) {
 /** Appliance data**/
 datapoints = {};
 compare_data = {};
+occurances = {};
 appID = -1;
 dataID = -1;
 
@@ -118,9 +119,10 @@ function plot_stacked_bar(result, type) {
                 label: function (tooltipItem, data) {
                     if (data.datasets.length - 1 != tooltipItem.datasetIndex) {
                         show_appliance(tooltipItem.datasetIndex, data.datasets[tooltipItem.datasetIndex].backgroundColor);
+                        return appliances[tooltipItem.datasetIndex].Name + ' : ' + tooltipItem.xLabel + '%';
                     }
 
-                    return appliances[tooltipItem.datasetIndex].Name + ' : ' + tooltipItem.xLabel + '%';
+                    return 'Rest';
                 }
             },
             position: 'cursor'
@@ -227,6 +229,30 @@ function get_datasets(appliances, type) {
             }
         });
 
+        $.ajax({
+            type: 'GET',
+            async: true,
+            url: 'assets/php/get_all_occurances.php',
+            contentType: 'application/json; charset=utf-8',
+            data: {
+                appliance_id: appliances[i].App_ID,
+                index: i
+            },
+            dataType: 'json',
+            success: function (result) {
+
+                var json = [];
+                for(var i = 1; i < result.length; i++) {
+                    json.push( {
+                        start: result[i].Start,
+                        duration: result[i].Duration
+                    });
+                }
+
+                occurances[result[0]] = json;
+            }
+        });
+
     }
 
 }
@@ -314,7 +340,7 @@ function show_appliance(id, color) {
 
         /** SET CHARACTERISTICS **/
         document.getElementById('duration').innerHTML = appliances[id].Avg_duration + ' min';
-        document.getElementById('consumption').innerHTML = appliances[id].Avg_tot_consumption + ' m<sup>3</sup>';
+        document.getElementById('consumption').innerHTML = appliances[id].Avg_tot_consumption + ' Watt';
         document.getElementById('count').innerHTML = appliances[id].Count;
         document.getElementById('start_time').innerHTML = datapoints[id].start;
         document.getElementById('pricepo').innerText = '€'+appliances[id].Avg_price_per_occ;
@@ -361,8 +387,6 @@ function show_appliance(id, color) {
         for (var i = 0; i < iframes.length; i++) {
             iframes[i].parentNode.removeChild(iframes[i]);
         }
-
-
 
         /** PROCESS DATA **/
         thisData = datapoints[id].data;
@@ -451,6 +475,31 @@ function show_appliance(id, color) {
             data: data,
             options: options
         });
+
+        var check_occurances = function(){
+            if(Object.keys(occurances).length > 0){
+                var table = document.getElementById('historyTable');
+                table.innerHTML = '';
+                /** SET HISTORY **/
+                for (var i = 0; i < occurances[id].length; i++) {
+                    var row = table.insertRow(0);
+
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+
+                    cell1.innerHTML = occurances[id][i].start;
+                    cell2.innerHTML = occurances[id][i].duration + ' min';
+
+                    cell1.className = 'historyCell';
+                    cell2.className = 'historyCell';
+                }
+            }
+            else {
+                setTimeout(check_occurances, 1000); // check again in a second
+            }
+        };
+
+        check_occurances();
     }
 }
 
@@ -567,8 +616,8 @@ function plot_compare (to_compare) {
         /** MODIFY DATA **/
         const data = [];
         const mydata = [];
-        var max = to_compare[0].Avg_tot_consumption;
-        var min = to_compare[0].Avg_tot_consumption;
+        var max = parseInt(to_compare[0].Avg_tot_consumption);
+        var min = parseInt(to_compare[0].Avg_tot_consumption);
         var this_appl = 0;
 
         for ( i = 0; i < to_compare.length; i++) {
@@ -589,14 +638,14 @@ function plot_compare (to_compare) {
 
                 mydata.push(temp);
 
-                this_appl = to_compare[i].Avg_tot_consumption
+                this_appl = parseInt(to_compare[i].Avg_tot_consumption)
             }
 
-            if (to_compare[i].Avg_tot_consumption > max) {
-                max = to_compare[i].Avg_tot_consumption;
+            if (parseInt(to_compare[i].Avg_tot_consumption) >= max) {
+                max = parseInt(to_compare[i].Avg_tot_consumption);
             }
-            if (to_compare[i].Avg_tot_consumption < min) {
-                min = to_compare[i].Avg_tot_consumption
+            if (parseInt(to_compare[i].Avg_tot_consumption) <= min) {
+                min = parseInt(to_compare[i].Avg_tot_consumption)
             }
 
         }
@@ -670,13 +719,14 @@ function plot_compare (to_compare) {
         /** CALCULATE STATUS **/
 
         if (to_compare.length > 1) {
+
             const percentage = (this_appl - min) / (max - min);
 
-            if (percentage == 1) {
+            if ( this_appl >= max) {
                 // HIGHEST CONSUMER
                 document.getElementById('comparison').innerText = 'Yours is the highest consumer';
             }
-            else if (percentage == 0) {
+            else if ( this_appl <= min) {
                 // LOWEST CONSUMER
                 document.getElementById('comparison').innerText = 'Yours is the lowest consumer';
             }

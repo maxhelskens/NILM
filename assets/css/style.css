@@ -2371,3 +2371,11 @@ input[type="checkbox"]:focus {
         width: 25% !important;
     }
 }
+
+
+
+
+.historyCell {
+    text-align: left;
+    padding-left: 10px;
+}

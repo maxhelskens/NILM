@@ -2,8 +2,8 @@
 /**
  * Created by IntelliJ IDEA.
  * User: Max
- * Date: 09/05/2017
- * Time: 13:23
+ * Date: 24/06/2017
+ * Time: 13:54
  */
 
 include('db_config.php');
@@ -11,15 +11,16 @@ include('db_config.php');
 /*****************************
  *       Get Variables       *
  *****************************/
-if (isset($_GET['cons_type'])) {
-    $type = $_GET['cons_type'];
+if (isset($_GET['appliance_id'])) {
+    $app_id = $_GET['appliance_id'];
 }
 else {
     exit();
 }
 
-if (isset($_GET['user'])) {
-    $usr = $_GET['user'];
+
+if (isset($_GET['index'])) {
+    $i = $_GET['index'];
 }
 else {
     exit();
@@ -49,7 +50,7 @@ if ($mysqli->connect_errno) {
 }
 
 
-$sql = "SELECT * FROM Appliances WHERE Type = '$type' AND  Users_ID = '$usr' AND Percentage != 0;";
+$sql = "SELECT * FROM Occurances WHERE Appliances_App_ID = '$app_id' ORDER BY Start DESC;";
 $result = $mysqli->query($sql);
 
 if(!$result) {
@@ -60,9 +61,10 @@ if(!$result) {
     exit;
 }
 
-$appliances =  array();
-while ($appliance = $result->fetch_assoc()) {
-    $appliances[] = $appliance;
+$occurances =  array();
+$occurances[] = $i;
+while ($occurance = $result->fetch_assoc()) {
+    $occurances[] = $occurance;
 }
 
-echo json_encode($appliances);
+echo json_encode($occurances);
