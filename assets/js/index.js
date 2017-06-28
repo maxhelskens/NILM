@@ -412,7 +412,7 @@ function show_no_data(tag) {
     panel.innerHTML =
         "<div style='width: 100%; height: " + height + " ; display: -webkit-flex;" +
         " display: flex; align-items: center; justify-content: center;'>" +
-        "<a class='logo' style='font-size: x-large; color: " + color + ";'> <b>No " + tag + "-data available.</b></a>" +
+        "<a class='logo' style='font-size: x-large; color: " + color + ";'> <b>No " + tag + "-data available</b></a>" +
         "</div>";
 }
 
