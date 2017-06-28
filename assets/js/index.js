@@ -207,7 +207,7 @@ function plot_doughnut(appliances, tag) {
                     }
                 },
                 position: 'cursor'
-            },
+            }
         }
     });
 }
@@ -319,6 +319,15 @@ function plot_price_chart(data, sample) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            tooltips: {
+                enabled: true,
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        return '€' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                    }
+                },
+                position: 'cursor'
+            },
             scales: {
                 yAxes: [{
                     stacked: true,
