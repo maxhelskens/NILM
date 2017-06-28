@@ -284,17 +284,24 @@ MAIN CONTENT
             function (result) {
 
                 console.log(result[0]);
-                if (result[0].id != -1) {
-                    sessionStorage.setItem('status', 'loggedIn');
-                    sessionStorage.setItem('user', result[0].ID);
-                    sessionStorage.setItem('first name', result[0].F_Name);
-                    sessionStorage.setItem('last name', result[0].L_Name);
-                    window.location.replace('index.html');
+                try {
+                    if (result[0].id != -1) {
+                        sessionStorage.setItem('status', 'loggedIn');
+                        sessionStorage.setItem('user', result[0].ID);
+                        sessionStorage.setItem('first name', result[0].F_Name);
+                        sessionStorage.setItem('last name', result[0].L_Name);
+                        window.location.replace('index.html');
+                    }
+                    else {
+                        console.log('here');
+                        document.getElementById("wrong_pwd").classList.remove("hide");
+                    }
                 }
-                else {
+                catch (err){
                     console.log('here');
                     document.getElementById("wrong_pwd").classList.remove("hide");
                 }
+
             });
     }
 
