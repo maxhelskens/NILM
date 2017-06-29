@@ -323,7 +323,7 @@ function plot_price_chart(data, sample) {
                 enabled: true,
                 callbacks: {
                     label: function (tooltipItem, data) {
-                        return '€' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        return '€' + Math.round(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] * 100)/100;
                     }
                 },
                 position: 'cursor'
